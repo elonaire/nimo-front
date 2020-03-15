@@ -11,30 +11,11 @@ import LocalPharmacy from "@material-ui/icons/LocalPharmacy";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import NavigateNext from "@material-ui/icons/NavigateNext";
-// import Carousel from "../carousel/Carousel";
+import Carousel from "../carousel/Carousel";
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary
-  },
-  carousel: {},
-  header: {
-    alignItems: "center",
-    height: 50,
-    // paddingLeft: theme.spacing(4),
-    backgroundColor: theme.palette.background.default
-  },
-  img: {
-    height: 255,
-    display: "block",
-    overflow: "hidden",
-    width: "100%",
-    objectFit: "cover"
   },
   media: {
     height: 0,
@@ -100,9 +81,8 @@ export default function ProductNav() {
             </ListItemLink>
           </List> */}
         </Grid>
-        <Divider orientation="vertical" flexItem />
         <Grid item xs={9}>
-          {/* <Carousel /> */}
+          <Carousel />
         </Grid>
       </Grid>
       <Divider />

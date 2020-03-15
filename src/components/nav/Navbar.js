@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,13 +8,15 @@ import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ShoppingCart from "@material-ui/icons/ShoppingCart";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import Box from "@material-ui/core/Box";
+// import Button from '@material-ui/core/Button';
 import Popover from "@material-ui/core/Popover";
+import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -82,6 +84,11 @@ const useStyles = makeStyles(theme => ({
   media: {
     height: 0
     // paddingTop: '56.25%', // 16:9
+  },
+  cartLink: {
+    display: 'inline-block',
+    width: '100%',
+    height: '100%'
   }
 }));
 
@@ -89,7 +96,6 @@ export default function NavBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [cartAnchorEl, setCartAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -110,17 +116,6 @@ export default function NavBar() {
   const handleMobileMenuOpen = event => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
-  const showCart = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const hideCart = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -150,35 +145,37 @@ export default function NavBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton
-          aria-describedby={id}
-          aria-label="show 4 new mails"
-          color="inherit"
-          onClick={showCart}
-        >
-          <Badge badgeContent={4} color="secondary">
-            <ShoppingCart />
-          </Badge>
-        </IconButton>
-        <p>Cart</p>
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={hideCart}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center"
-          }}
-        >
-          <Typography className={classes.typography}>
-            The content of the Popover.
-          </Typography>
-        </Popover>
+        <PopupState variant="popover" popupId="demo-popup-popover">
+          {popupState => (
+            <Fragment>
+              
+              <p className={classes.cartLink} {...bindTrigger(popupState)}><IconButton
+                // aria-describedby={id}
+                aria-label="show 4 new mails"
+                color="inherit"
+              >
+                <Badge badgeContent={4} color="secondary">
+                  <ShoppingCart />
+                </Badge>
+              </IconButton>Cart</p>
+              <Popover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center"
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center"
+                }}
+              >
+                <Box p={2}>
+                  <Typography>The cart is empty.</Typography>
+                </Box>
+              </Popover>
+            </Fragment>
+          )}
+        </PopupState>
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
@@ -206,14 +203,6 @@ export default function NavBar() {
     <div className={classes.grow}>
       <AppBar className={classes.navBar} position="static">
         <Toolbar>
-          {/* <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton> */}
           <Typography className={classes.title} variant="h6" noWrap>
             Nimo Naturals&trade;
           </Typography>
@@ -232,34 +221,37 @@ export default function NavBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton
-              aria-describedby={id}
-              aria-label="show 4 new mails"
-              color="inherit"
-              onClick={showCart}
-            >
-              <Badge badgeContent={4} color="secondary">
-                <ShoppingCart />
-              </Badge>
-            </IconButton>
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={hideCart}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center"
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center"
-              }}
-            >
-              <Typography className={classes.typography}>
-                The content of the Popover.
-              </Typography>
-            </Popover>
+            <PopupState variant="popover" popupId="demo-popup-popover">
+              {popupState => (
+                <div>
+                  <IconButton
+                    // aria-describedby={id}
+                    aria-label="show 4 new mails"
+                    color="inherit"
+                    {...bindTrigger(popupState)}
+                  >
+                    <Badge badgeContent={4} color="secondary">
+                      <ShoppingCart />
+                    </Badge>
+                  </IconButton>
+                  <Popover
+                    {...bindPopover(popupState)}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center"
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center"
+                    }}
+                  >
+                    <Box p={2}>
+                      <Typography>The cart is empty.</Typography>
+                    </Box>
+                  </Popover>
+                </div>
+              )}
+            </PopupState>
             <IconButton aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />

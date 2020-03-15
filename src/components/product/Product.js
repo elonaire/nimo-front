@@ -11,16 +11,17 @@ import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import { Divider } from "@material-ui/core";
+import { ReadOnlyRating } from "../rating/Rating";
 
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 250,
-    marginTop: '2%'
+    marginTop: "2%"
   },
   media: {
     height: 0,
     paddingTop: "56.25%", // 16:9
-    marginTop: '2%'
+    marginTop: "2%"
   },
   expand: {
     transform: "rotate(0deg)",
@@ -45,13 +46,13 @@ export default function Product() {
     <Card className={classes.root}>
       <CardMedia
         className={classes.media}
-        image="nimologo.jpg"
-        title="Paella dish"
+        image="blackcastoroil.jpg"
+        title="Black Castor Oil"
       />
       <Divider />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="h4">
-          Grape Seed Oil
+        Black Castor Oil
         </Typography>
         <Typography variant="body2" color="textPrimary" component="p">
           Kshs. 400
@@ -64,6 +65,7 @@ export default function Product() {
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
+        <ReadOnlyRating />
       </CardActions>
     </Card>
   );
