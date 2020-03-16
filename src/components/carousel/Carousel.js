@@ -49,6 +49,7 @@ const useStyles = makeStyles(theme => ({
     height: 50,
     paddingLeft: theme.spacing(4),
     backgroundColor: theme.palette.background.default,
+    color: '#e08455'
   },
   img: {
     height: '30vh',
@@ -58,6 +59,9 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     objectFit: 'cover'
   },
+  mobileStepper: {
+    color: '#e08455'
+  }
 }));
 
 function Carousel() {
@@ -81,7 +85,7 @@ function Carousel() {
   return (
     <div className={classes.root}>
       <Paper square elevation={0} className={classes.header}>
-        <Typography>{tutorialSteps[activeStep].label}</Typography>
+        <Typography>TOP SELECTION: {tutorialSteps[activeStep].label}</Typography>
       </Paper>
       <AutoPlaySwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
@@ -98,6 +102,7 @@ function Carousel() {
         ))}
       </AutoPlaySwipeableViews>
       <MobileStepper
+        className={classes.mobileStepper}
         steps={maxSteps}
         position="static"
         variant="text"

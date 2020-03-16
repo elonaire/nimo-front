@@ -31,7 +31,8 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    backgroundColor: "green"
+    backgroundColor: "#323741",
+    color: '#A1A8B8'
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -39,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen
-    })
+    }),
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -52,14 +53,17 @@ const useStyles = makeStyles(theme => ({
     flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    backgroundColor: '#323741',
+    color: '#A1A8B8'
   },
   drawerHeader: {
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    color: '#A1A8B8'
   },
   content: {
     flexGrow: 1,
@@ -154,14 +158,14 @@ export default function AdminNav() {
             <ListItemIcon>
               <FlightTakeoff></FlightTakeoff>
             </ListItemIcon>
-            <ListItemText primary="Orders" />
+            <ListItemText primary="Manage Orders" />
           </ListItem>
 
           <ListItem button>
             <ListItemIcon>
               <Create></Create>
             </ListItemIcon>
-            <ListItemText primary="Products" />
+            <ListItemText primary="Manage Products" />
           </ListItem>
         </List>
         <Divider />

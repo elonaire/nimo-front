@@ -68,18 +68,22 @@ export default function ProductNav() {
               <ListItemIcon>
                 <LocalPharmacy />
               </ListItemIcon>
-              <ListItemText primary="Health and Beauty" /> <NavigateNext />
+              <ListItemText primary="Skincare" /> <NavigateNext />
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <LocalPharmacy />
+              </ListItemIcon>
+              <ListItemText primary="Body" /> <NavigateNext />
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <LocalPharmacy />
+              </ListItemIcon>
+              <ListItemText primary="Sets &amp; Sales" /> <NavigateNext />
             </ListItem>
           </List>
           <Divider />
-          {/* <List component="nav" aria-label="secondary mailbox folders">
-            <ListItem button>
-              <ListItemText primary="Trash" />
-            </ListItem>
-            <ListItemLink href="#simple-list">
-              <ListItemText primary="Spam" />
-            </ListItemLink>
-          </List> */}
         </Grid>
         <Grid item xs={9}>
           <Carousel />
