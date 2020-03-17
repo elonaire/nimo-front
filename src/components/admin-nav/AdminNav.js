@@ -18,7 +18,10 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Create from "@material-ui/icons/Create";
 import Chat from "@material-ui/icons/Chat";
+import Group from "@material-ui/icons/Group";
 import FlightTakeoff from "@material-ui/icons/FlightTakeoff";
+import Grid from '@material-ui/core/Grid';
+import Stats from '../stats/Stats';
 
 const drawerWidth = 240;
 
@@ -72,7 +75,9 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    marginLeft: -drawerWidth
+    marginLeft: -drawerWidth,
+    backgroundColor: '#292D36',
+    minHeight: '100vh'
   },
   contentShift: {
     transition: theme.transitions.create("margin", {
@@ -80,7 +85,10 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen
     }),
     marginLeft: 0
-  }
+  },
+  navIcon: {
+    color: '#A1A8B8'
+  },
 }));
 
 export default function AdminNav() {
@@ -132,7 +140,7 @@ export default function AdminNav() {
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon className={classes.navIcon} />
             ) : (
               <ChevronRightIcon />
             )}
@@ -142,41 +150,40 @@ export default function AdminNav() {
         <List>
           <ListItem button>
             <ListItemIcon>
-              <Laptop></Laptop>
+              <Laptop className={classes.navIcon}></Laptop>
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
 
           <ListItem button>
             <ListItemIcon>
-              <Chat></Chat>
+              <Chat className={classes.navIcon}></Chat>
             </ListItemIcon>
             <ListItemText primary="Inbox" />
           </ListItem>
 
           <ListItem button>
             <ListItemIcon>
-              <FlightTakeoff></FlightTakeoff>
+              <FlightTakeoff className={classes.navIcon}></FlightTakeoff>
             </ListItemIcon>
             <ListItemText primary="Manage Orders" />
           </ListItem>
 
           <ListItem button>
             <ListItemIcon>
-              <Create></Create>
+              <Create className={classes.navIcon}></Create>
             </ListItemIcon>
             <ListItemText primary="Manage Products" />
           </ListItem>
+
+          <ListItem button>
+            <ListItemIcon>
+              <Group className={classes.navIcon}></Group>
+            </ListItemIcon>
+            <ListItemText primary="Manage Users" />
+          </ListItem>
         </List>
         <Divider />
-        {/* <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List> */}
       </Drawer>
       <main
         className={clsx(classes.content, {
@@ -184,35 +191,95 @@ export default function AdminNav() {
         })}
       >
         <div className={classes.drawerHeader} />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <div className={classes.dashboard}>
+        <div className={classes.root}>
+      <Grid
+        container
+        spacing={1}
+      >
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <Stats
+          name="Orders"
+           />
+        </Grid>
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <Stats
+          name="Users"
+           />
+        </Grid>
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <Stats
+          name="Sales"
+           />
+        </Grid>
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <Stats
+          name="Profits"
+           />
+        </Grid>
+        <Grid
+          item
+          lg={8}
+          md={12}
+          xl={9}
+          xs={12}
+        >
+          {/* <LatestSales /> */}
+        </Grid>
+        <Grid
+          item
+          lg={4}
+          md={6}
+          xl={3}
+          xs={12}
+        >
+          {/* <UsersByDevice /> */}
+        </Grid>
+        <Grid
+          item
+          lg={4}
+          md={6}
+          xl={3}
+          xs={12}
+        >
+          {/* <LatestProducts /> */}
+        </Grid>
+        <Grid
+          item
+          lg={8}
+          md={12}
+          xl={9}
+          xs={12}
+        >
+          {/* <LatestOrders /> */}
+        </Grid>
+      </Grid>
+    </div>
+        </div>
       </main>
     </div>
   );
