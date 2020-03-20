@@ -4,6 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from "@material-ui/core/Typography";
 import LineChart from '../line-chart/LineChart';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+// import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -18,12 +20,31 @@ const useStyles = makeStyles(theme => ({
     paper: {
         backgroundColor: '#323741',
         color: '#A1A8B8',
-        boxShadow: '1px 1px 5px #A1A8B8'
+        boxShadow: '1px 1px 5px #A1A8B8',
     },
     statSection: {
         display: 'flex',
         flexDirection: 'column',
-        padding: '5px'
+        padding: '5px',
+        overflow: 'hidden'
+    },
+    drop: {
+        color: 'red',
+        fontSize: '35px'
+    },
+    rise: {
+        color: 'green',
+        fontSize: '35px',
+        display: 'block'
+    },
+    summary: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    percentage: {
+        fontSize: '27px',
+        color: 'green',
+        display: 'block'
     }
 }));
 
@@ -57,6 +78,11 @@ export default function Stats(props) {
                     >
                         <div className={classes.statSection}>
                             <LineChart />
+                            <div className={classes.summary}>
+                                <ArrowUpwardIcon className={classes.rise} />
+                                {/* <ArrowDownwardIcon className={classes.drop} /> */}
+                                <span className={classes.percentage}>20%</span>
+                            </div>
                         </div>
                     </Grid>
                 </Grid>

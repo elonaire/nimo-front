@@ -3,7 +3,7 @@ import "./App.css";
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import RegistrationPage from "./pages/Register";
-import AdminPanel from "./pages/AdminPanel";
+import AdminNav from './components/admin-nav/AdminNav';
 import {
   BrowserRouter as Router,
   Switch,
@@ -35,7 +35,7 @@ function App() {
           <Route exact component={LoginPage} path="/login" />
           <Route exact component={RegistrationPage} path="/registration" />
           <Route exact component={HomePage} path="/" />
-          <Route exact component={AdminPanel} path="/admin-dashboard" />
+          <Route exact component={AdminNav} path="/admin-dashboard" />
         </Switch>
       </div>
     </Router>

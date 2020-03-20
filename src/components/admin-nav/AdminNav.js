@@ -20,8 +20,13 @@ import Create from "@material-ui/icons/Create";
 import Chat from "@material-ui/icons/Chat";
 import Group from "@material-ui/icons/Group";
 import FlightTakeoff from "@material-ui/icons/FlightTakeoff";
-import Grid from '@material-ui/core/Grid';
-import Stats from '../stats/Stats';
+import PostAdd from "@material-ui/icons/PostAdd";
+import AdminPanel from "../../pages/AdminPanel";
+import ManageUsers from "../../pages/ManageUsers";
+import Inbox from "../../pages/Inbox";
+import ManageOrders from "../../pages/ManageOrders";
+import ManageProducts from "../../pages/ManageProducts";
+import ManageBlog from "../../pages/ManageBlog";
 
 const drawerWidth = 240;
 
@@ -95,6 +100,46 @@ export default function AdminNav() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [showDash, setShowDash] = React.useState(true);
+  const [showInbox, setShowInbox] = React.useState(false);
+  const [showOrders, setShowOrders] = React.useState(false);
+  const [showProducts, setShowProducts] = React.useState(false);
+  const [showUsers, setShowUsers] = React.useState(false);
+  const [showBlog, setShowBlog] = React.useState(false);
+  let section;
+
+  const navigateDashboard = (link) => {
+    console.log(link);
+    let navigationControls = [setShowDash, setShowInbox, setShowOrders, setShowProducts, setShowUsers, setShowBlog];
+
+    if (link === 'dash') {
+      navigationControls.map((setActive, index) => index === 0 ? setActive(true) : setActive(false));
+    } else if (link === 'inbox') {
+      navigationControls.map((setActive, index) => index === 1 ? setActive(true) : setActive(false));
+    } else if (link === 'orders') {
+      navigationControls.map((setActive, index) => index === 3 ? setActive(true) : setActive(false));
+    } else if (link === 'products') {
+      navigationControls.map((setActive, index) => index === 4 ? setActive(true) : setActive(false));
+    } else if (link === 'users') {
+      navigationControls.map((setActive, index) => index === 5 ? setActive(true) : setActive(false));
+    } else if (link === 'blog') {
+      navigationControls.map((setActive, index) => index === 6 ? setActive(true) : setActive(false));
+    }
+  }
+
+  if (showDash) {
+    section = <AdminPanel />;
+  } else if (showInbox) {
+    section = <Inbox />
+  } else if (showOrders) {
+    section = <ManageOrders />
+  } else if (showProducts) {
+    section = <ManageProducts />
+  } else if (showUsers) {
+    section = <ManageUsers />
+  } else if (showBlog) {
+    section = <ManageBlog />
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -142,45 +187,52 @@ export default function AdminNav() {
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon className={classes.navIcon} />
             ) : (
-              <ChevronRightIcon />
-            )}
+                <ChevronRightIcon />
+              )}
           </IconButton>
         </div>
         <Divider />
         <List>
-          <ListItem button>
+          <ListItem onClick={() => navigateDashboard('dash')} button>
             <ListItemIcon>
               <Laptop className={classes.navIcon}></Laptop>
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
 
-          <ListItem button>
+          <ListItem onClick={() => navigateDashboard('inbox')} button>
             <ListItemIcon>
               <Chat className={classes.navIcon}></Chat>
             </ListItemIcon>
             <ListItemText primary="Inbox" />
           </ListItem>
 
-          <ListItem button>
+          <ListItem onClick={() => navigateDashboard('orders')} button>
             <ListItemIcon>
               <FlightTakeoff className={classes.navIcon}></FlightTakeoff>
             </ListItemIcon>
             <ListItemText primary="Manage Orders" />
           </ListItem>
 
-          <ListItem button>
+          <ListItem onClick={() => navigateDashboard('products')} button>
             <ListItemIcon>
               <Create className={classes.navIcon}></Create>
             </ListItemIcon>
             <ListItemText primary="Manage Products" />
           </ListItem>
 
-          <ListItem button>
+          <ListItem onClick={() => navigateDashboard('users')} button>
             <ListItemIcon>
               <Group className={classes.navIcon}></Group>
             </ListItemIcon>
             <ListItemText primary="Manage Users" />
+          </ListItem>
+
+          <ListItem onClick={() => navigateDashboard('blog')} button>
+            <ListItemIcon>
+              <PostAdd className={classes.navIcon}></PostAdd>
+            </ListItemIcon>
+            <ListItemText primary="Manage Blog" />
           </ListItem>
         </List>
         <Divider />
@@ -191,95 +243,7 @@ export default function AdminNav() {
         })}
       >
         <div className={classes.drawerHeader} />
-        <div className={classes.dashboard}>
-        <div className={classes.root}>
-      <Grid
-        container
-        spacing={1}
-      >
-        <Grid
-          item
-          lg={3}
-          sm={6}
-          xl={3}
-          xs={12}
-        >
-          <Stats
-          name="Orders"
-           />
-        </Grid>
-        <Grid
-          item
-          lg={3}
-          sm={6}
-          xl={3}
-          xs={12}
-        >
-          <Stats
-          name="Users"
-           />
-        </Grid>
-        <Grid
-          item
-          lg={3}
-          sm={6}
-          xl={3}
-          xs={12}
-        >
-          <Stats
-          name="Sales"
-           />
-        </Grid>
-        <Grid
-          item
-          lg={3}
-          sm={6}
-          xl={3}
-          xs={12}
-        >
-          <Stats
-          name="Profits"
-           />
-        </Grid>
-        <Grid
-          item
-          lg={8}
-          md={12}
-          xl={9}
-          xs={12}
-        >
-          {/* <LatestSales /> */}
-        </Grid>
-        <Grid
-          item
-          lg={4}
-          md={6}
-          xl={3}
-          xs={12}
-        >
-          {/* <UsersByDevice /> */}
-        </Grid>
-        <Grid
-          item
-          lg={4}
-          md={6}
-          xl={3}
-          xs={12}
-        >
-          {/* <LatestProducts /> */}
-        </Grid>
-        <Grid
-          item
-          lg={8}
-          md={12}
-          xl={9}
-          xs={12}
-        >
-          {/* <LatestOrders /> */}
-        </Grid>
-      </Grid>
-    </div>
-        </div>
+        {section}
       </main>
     </div>
   );
