@@ -19,6 +19,9 @@ import Popover from "@material-ui/core/Popover";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 import PropTypes from 'prop-types';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import {
+  Link as RouterLink
+} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -91,6 +94,12 @@ const useStyles = makeStyles(theme => ({
     display: 'inline-block',
     width: '100%',
     height: '100%'
+  },
+  navLinks: {
+    color: '#fff',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    margin: '10px 10px 10px 10px'
   }
 }));
 
@@ -246,6 +255,10 @@ export default function NavBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
+          <RouterLink className={classes.navLinks}>Home</RouterLink>
+          <RouterLink className={classes.navLinks}>Shop by Category</RouterLink>
+          <RouterLink className={classes.navLinks}>Shop by Concerns</RouterLink>
+          <RouterLink className={classes.navLinks}>Combos</RouterLink>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <PopupState variant="popover" popupId="demo-popup-popover">

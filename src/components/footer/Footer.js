@@ -30,7 +30,8 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     minHeight: '40vh',
     backgroundColor: 'green',
-    bottom: '0'
+    bottom: '0',
+    margin: '2% 0 0 0'
   },
   main: {
     marginTop: theme.spacing(8),
@@ -44,7 +45,11 @@ const useStyles = makeStyles(theme => ({
   },
   footerLinks: {
     color: '#fff',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
   },
   linkTitle: {
     color: '#E08455'

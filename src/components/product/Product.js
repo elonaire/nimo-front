@@ -12,6 +12,8 @@ import { red } from "@material-ui/core/colors";
 // import ShareIcon from "@material-ui/icons/Share";
 import { Divider } from "@material-ui/core";
 import { ReadOnlyRating } from "../rating/Rating";
+import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,7 +37,18 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     backgroundColor: red[500]
-  }
+  },
+  actions: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  product: {
+    textDecoration: "none",
+    marginLeft: "2%",
+    "&:hover": {
+      textDecoration: "none"
+    }
+  },
 }));
 
 export default function Product() {
@@ -44,22 +57,33 @@ export default function Product() {
 
   return (
     <Card className={classes.root}>
-      <CardMedia
-        className={classes.media}
-        image="blackcastoroil.jpg"
-        title="Black Castor Oil"
-      />
-      <Divider />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="h4">
-        Black Castor Oil
-        </Typography>
-        <Typography variant="body2" color="textPrimary" component="p">
-          Kshs. 400
-        </Typography>
-      </CardContent>
+      <Link
+        className={classes.product}
+        color="inherit"
+        href="https://material-ui.com/"
+      >
+        <CardMedia
+          className={classes.media}
+          image="blackcastoroil.jpg"
+          title="Black Castor Oil"
+        />
+        <Divider />
+        <CardContent>
+          <Typography variant="body2" color="textSecondary" component="h4">
+            Black Castor Oil
+          </Typography>
+          <Typography variant="body2" color="textPrimary" component="p">
+            Kshs. 400
+          </Typography>
+        </CardContent>
+      </Link>
       <CardActions disableSpacing>
-        <ReadOnlyRating />
+        <div className={classes.actions}>
+          <ReadOnlyRating />
+          <Button variant="outlined" color="primary">
+            Add to Cart
+          </Button>
+        </div>
       </CardActions>
     </Card>
   );
