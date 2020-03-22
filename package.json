@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "leaflet": "^1.6.0",
+    "markdown-to-jsx": "^6.11.0",
     "material-auto-rotating-carousel": "^3.0.2",
     "material-table": "^1.57.2",
     "material-ui-popup-state": "^1.5.3",

@@ -2,7 +2,7 @@ import React from 'react';
 import MaterialTable from 'material-table';
 import { tableIcons } from './MatTableIcons';
 
-export default function MaterialTableDemo() {
+export default function MatTable(props) {
     const [state, setState] = React.useState({
         columns: [
             { title: 'Name', field: 'name' },
@@ -34,7 +34,7 @@ export default function MaterialTableDemo() {
                 }
             }
             icons={tableIcons}
-            title="Editable Example"
+            title={props.title}
             columns={state.columns}
             data={state.data}
             editable={{

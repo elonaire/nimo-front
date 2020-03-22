@@ -17,11 +17,13 @@ import Box from "@material-ui/core/Box";
 // import Button from '@material-ui/core/Button';
 import Popover from "@material-ui/core/Popover";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
-import PropTypes from 'prop-types';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import {
-  Link as RouterLink
-} from "react-router-dom";
+import PropTypes from "prop-types";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import { Link as RouterLink } from "react-router-dom";
+import DropdownMenu from "../dropdown-menu/DropdownMenu";
+import ExpandMore from '@material-ui/icons/ExpandMore';
+
+
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -91,17 +93,26 @@ const useStyles = makeStyles(theme => ({
     // paddingTop: '56.25%', // 16:9
   },
   cartLink: {
-    display: 'inline-block',
-    width: '100%',
-    height: '100%'
+    display: "inline-block",
+    width: "100%",
+    height: "100%"
   },
   navLinks: {
-    color: '#fff',
-    cursor: 'pointer',
-    textDecoration: 'none',
-    margin: '10px 10px 10px 10px'
+    color: "#fff",
+    cursor: "pointer",
+    textDecoration: "none",
+    margin: "10px 10px 10px 10px",
+    display: 'flex',
+    flexDirection: 'row'
   }
 }));
+
+const categories = [
+  {
+    name: 'Face Care',
+    subCategory: 'Face Pack'
+  }
+]
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -111,11 +122,11 @@ function ElevationScroll(props) {
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 0,
-    target: window ? window() : undefined,
+    target: window ? window() : undefined
   });
 
   return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0,
+    elevation: trigger ? 4 : 0
   });
 }
 
@@ -125,7 +136,7 @@ ElevationScroll.propTypes = {
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
-  window: PropTypes.func,
+  window: PropTypes.func
 };
 
 export default function NavBar() {
@@ -184,16 +195,18 @@ export default function NavBar() {
         <PopupState variant="popover" popupId="demo-popup-popover">
           {popupState => (
             <Fragment>
-              
-              <p className={classes.cartLink} {...bindTrigger(popupState)}><IconButton
-                // aria-describedby={id}
-                aria-label="show 4 new mails"
-                color="inherit"
-              >
-                <Badge badgeContent={4} color="secondary">
-                  <ShoppingCart />
-                </Badge>
-              </IconButton>Cart</p>
+              <p className={classes.cartLink} {...bindTrigger(popupState)}>
+                <IconButton
+                  // aria-describedby={id}
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                >
+                  <Badge badgeContent={4} color="secondary">
+                    <ShoppingCart />
+                  </Badge>
+                </IconButton>
+                Cart
+              </p>
               <Popover
                 {...bindPopover(popupState)}
                 anchorOrigin={{
@@ -255,10 +268,95 @@ export default function NavBar() {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
-          <RouterLink className={classes.navLinks}>Home</RouterLink>
-          <RouterLink className={classes.navLinks}>Shop by Category</RouterLink>
-          <RouterLink className={classes.navLinks}>Shop by Concerns</RouterLink>
-          <RouterLink className={classes.navLinks}>Combos</RouterLink>
+          <RouterLink to="/" className={classes.navLinks}>
+            HOME
+          </RouterLink>
+          <PopupState variant="popover" popupId="demo-popup-popover">
+            {popupState => (
+              <div>
+                <RouterLink
+                  to="#"
+                  {...bindTrigger(popupState)}
+                  className={classes.navLinks}
+                >
+                  SHOP BY CATEGORY
+                  <ExpandMore />
+                </RouterLink>
+                <Popover
+                  {...bindPopover(popupState)}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center"
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center"
+                  }}
+                >
+                  <DropdownMenu categories={categories} />
+                </Popover>
+              </div>
+            )}
+          </PopupState>
+
+          <PopupState variant="popover" popupId="demo-popup-popover">
+            {popupState => (
+              <div>
+                <RouterLink
+                  to="#"
+                  {...bindTrigger(popupState)}
+                  className={classes.navLinks}
+                >
+                  SHOP BY CONCERNS
+                  <ExpandMore />
+                </RouterLink>
+                <Popover
+                  {...bindPopover(popupState)}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center"
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center"
+                  }}
+                >
+                  <DropdownMenu categories={categories} />
+                </Popover>
+              </div>
+            )}
+          </PopupState>
+
+          <PopupState variant="popover" popupId="demo-popup-popover">
+            {popupState => (
+              <div>
+                <RouterLink
+                  to="#"
+                  {...bindTrigger(popupState)}
+                  className={classes.navLinks}
+                >
+                  COMBOS
+                  <ExpandMore />
+                </RouterLink>
+                <Popover
+                  {...bindPopover(popupState)}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center"
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center"
+                  }}
+                >
+                  <DropdownMenu categories={categories} />
+                </Popover>
+              </div>
+            )}
+          </PopupState>
+          <RouterLink to="/blog" className={classes.navLinks}>
+            BLOG
+          </RouterLink>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <PopupState variant="popover" popupId="demo-popup-popover">

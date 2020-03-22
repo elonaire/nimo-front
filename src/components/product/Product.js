@@ -17,13 +17,14 @@ import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 250,
-    marginTop: "2%"
+    width: '15vw',
+    marginTop: "2%",
+    boxShadow: '0',
   },
   media: {
     height: 0,
     paddingTop: "56.25%", // 16:9
-    marginTop: "2%"
+    // marginTop: "2%"
   },
   expand: {
     transform: "rotate(0deg)",
@@ -44,16 +45,19 @@ const useStyles = makeStyles(theme => ({
   },
   product: {
     textDecoration: "none",
-    marginLeft: "2%",
+    // marginLeft: "2%",
     "&:hover": {
       textDecoration: "none"
     }
   },
+  actions: {
+    paddingLeft: '15%'
+  }
 }));
 
 export default function Product() {
   const classes = useStyles();
-  const [] = React.useState(false);
+  // const [] = React.useState(false);
 
   return (
     <Card className={classes.root}>

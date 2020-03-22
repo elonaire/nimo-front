@@ -1,48 +1,59 @@
-import React, { Fragment } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import Review from "../reviews/Review";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Product from "../product/Product";
+// import GridListTileBar from '@material-ui/core/GridListTileBar';
+// import IconButton from '@material-ui/core/IconButton';
+// import StarBorderIcon from '@material-ui/icons/StarBorder';
+// import tileData from './tileData';
 
 const useStyles = makeStyles(theme => ({
-    bestH: {
-        textAlign: "center",
-        color: "#e08455"
-      },
-      product: {
-        textDecoration: "none",
-        marginLeft: "2%",
-        "&:hover": {
-          textDecoration: "none"
-        }
-      },
-      bestSellers: {
-        textAlign: 'center',
-        alignContent: 'justify'
-      }
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+    margin: "5% 0"
+  },
+  gridList: {
+    flexWrap: "nowrap",
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: "translateZ(0)"
+  },
+  title: {
+    color: theme.palette.primary.light
+  },
+  titleBar: {
+    background:
+      "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)"
+  },
+  tile: {
+    minHeight: "38vh"
+  },
+  bestH: {
+    textAlign: "center",
+    color: "#e08455"
+  }
 }));
 
-export default function About() {
+export default function Reviews() {
   const classes = useStyles();
-  const theme = useTheme();
 
   return (
-    <Card>
+    <div className={classes.root}>
       <Typography className={classes.bestH} variant="h3">
         REVIEWS
       </Typography>
-      <CardContent>
-        <Grid className={classes.bestSellers} container spacing={1}>
-          {[0, 1, 2].map((p, index) => (
-              <Grid key={index} item xs>
-                <Product />
-              </Grid>
-          ))}
-        </Grid>
-      </CardContent>
-    </Card>
+      <GridList className={classes.gridList} cols={2.5}>
+        {[0, 1, 2].map((tile, index) => (
+          <GridListTile className={classes.tile} key={index}>
+            <Review />
+          </GridListTile>
+        ))}
+      </GridList>
+    </div>
   );
 }

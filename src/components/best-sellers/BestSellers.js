@@ -9,6 +9,10 @@ import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    margin: "5% 0"
+  },
   bestH: {
     textAlign: "center",
     color: "#e08455"
@@ -29,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 const BestSellers = () => {
   const classes = useStyles();
   return (
-    <Card>
+    <Card className={classes.root}>
       <Typography className={classes.bestH} variant="h3">
         BEST SELLERS
       </Typography>

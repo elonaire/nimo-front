@@ -4,6 +4,7 @@ import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import RegistrationPage from "./pages/Register";
 import AdminNav from './components/admin-nav/AdminNav';
+import Blog from './pages/Blog';
 import {
   BrowserRouter as Router,
   Switch,
@@ -36,6 +37,7 @@ function App() {
           <Route exact component={RegistrationPage} path="/registration" />
           <Route exact component={HomePage} path="/" />
           <Route exact component={AdminNav} path="/admin-dashboard" />
+          <Route exact component={Blog} path="/blog" />
         </Switch>
       </div>
     </Router>

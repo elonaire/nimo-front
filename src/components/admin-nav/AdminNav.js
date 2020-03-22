@@ -117,13 +117,13 @@ export default function AdminNav() {
     } else if (link === 'inbox') {
       navigationControls.map((setActive, index) => index === 1 ? setActive(true) : setActive(false));
     } else if (link === 'orders') {
-      navigationControls.map((setActive, index) => index === 3 ? setActive(true) : setActive(false));
+      navigationControls.map((setActive, index) => index === 2 ? setActive(true) : setActive(false));
     } else if (link === 'products') {
-      navigationControls.map((setActive, index) => index === 4 ? setActive(true) : setActive(false));
+      navigationControls.map((setActive, index) => index === 3 ? setActive(true) : setActive(false));
     } else if (link === 'users') {
-      navigationControls.map((setActive, index) => index === 5 ? setActive(true) : setActive(false));
+      navigationControls.map((setActive, index) => index === 4 ? setActive(true) : setActive(false));
     } else if (link === 'blog') {
-      navigationControls.map((setActive, index) => index === 6 ? setActive(true) : setActive(false));
+      navigationControls.map((setActive, index) => index === 5 ? setActive(true) : setActive(false));
     }
   }
 

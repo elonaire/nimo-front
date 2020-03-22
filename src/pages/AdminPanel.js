@@ -72,7 +72,7 @@ const AdminPanel = () => {
                     xl={9}
                     xs={12}
                 >
-                    <MatTable />
+                    <MatTable title="Pending Orders" />
                 </Grid>
                 <Grid
                     item
@@ -90,7 +90,7 @@ const AdminPanel = () => {
                     xl={3}
                     xs={12}
                 >
-                    {/* <LatestProducts /> */}
+                    {/* <MatTable /> */}
                 </Grid>
                 <Grid
                     item
@@ -99,7 +99,7 @@ const AdminPanel = () => {
                     xl={9}
                     xs={12}
                 >
-                    {/* <LatestOrders /> */}
+                    <MatTable title="Sales" />
                 </Grid>
             </Grid>
         </div>

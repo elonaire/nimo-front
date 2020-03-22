@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -10,7 +9,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     // margin: "0 1% 2% 1%"
-    height: '25vh'
+    height: '32vh',
+    margin: '5% 0'
   },
   details: {
     display: "flex",
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   cover: {
     // width: 151
     height: '100%',
-    objectFit: 'cover'
+    objectFit: 'contain'
   },
   aboutTitle: {
     textAlign: "center",
@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function About() {
   const classes = useStyles();
-  const theme = useTheme();
+  // const theme = useTheme();
 
   return (
     <div className={classes.wrapper}>
@@ -60,22 +60,10 @@ export default function About() {
         <Grid item xs={6}>
           <Card className={classes.root}>
             <Grid container spacing={0}>
-              <Grid item xs={6}>
-                <div className={classes.details}>
-                  <CardContent className={classes.content}>
-                    <Typography component="h5" variant="h5">
-                      Live From Space
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Mac Miller
-                    </Typography>
-                  </CardContent>
-                </div>
-              </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <CardMedia
                   className={classes.cover}
-                  image="nimologo.jpg"
+                  image="science.jpg"
                   title="Live from space album cover"
                 />
               </Grid>
@@ -85,22 +73,10 @@ export default function About() {
         <Grid item xs={6}>
           <Card className={classes.root}>
             <Grid container spacing={0}>
-              <Grid item xs={6}>
-                <div className={classes.details}>
-                  <CardContent className={classes.content}>
-                    <Typography component="h5" variant="h5">
-                      Live From Space
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Mac Miller
-                    </Typography>
-                  </CardContent>
-                </div>
-              </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <CardMedia
                   className={classes.cover}
-                  image="nimologo.jpg"
+                  image="nature.jpg"
                   title="Live from space album cover"
                 />
               </Grid>

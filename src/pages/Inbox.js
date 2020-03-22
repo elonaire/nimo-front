@@ -1,10 +1,10 @@
 import React from 'react';
 import MatTable from '../components/mat-table/MatTable';
 
-const ManageUsers = () => {
+const Inbox = () => {
     return (
         <MatTable />
     );
 }
 
-export default ManageUsers;
+export default Inbox;
