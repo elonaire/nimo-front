@@ -409,6 +409,31 @@ export default function AddProduct() {
                 </Select>
               </FormControl>
             </Grid>
+
+            <Grid item xs={12}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel
+                  ref={inputLabel}
+                  id="demo-simple-select-outlined-label"
+                >
+                  Color
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  value={gender}
+                  onChange={handleChange}
+                  labelWidth={labelWidth}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={10}>Male</MenuItem>
+                  <MenuItem value={20}>Female</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 autoComplete="productName"
@@ -513,13 +538,6 @@ export default function AddProduct() {
           >
             Add Product
           </Button>
-          {/* <Grid container justify="flex-end">
-            <Grid item>
-              <RouterLink to="/login" variant="body2">
-                Already have an account? Sign in
-              </RouterLink>
-            </Grid>
-          </Grid> */}
         </form>
       </div>
     </Container>
