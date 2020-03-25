@@ -24,7 +24,6 @@ import DropdownMenu from "../dropdown-menu/DropdownMenu";
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 
-
 const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1
@@ -104,6 +103,11 @@ const useStyles = makeStyles(theme => ({
     margin: "10px 10px 10px 10px",
     display: 'flex',
     flexDirection: 'row'
+  },
+  signIn: {
+    color: "#000",
+    cursor: "pointer",
+    textDecoration: "none",
   }
 }));
 
@@ -113,6 +117,14 @@ const categories = [
     subCategory: 'Face Pack'
   }
 ]
+
+function CheckAuth(status) {
+  if (localStorage.getItem('JWTAUTH')) {
+    status = true;
+  } else {
+    status = false;
+  }
+}
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -141,6 +153,10 @@ ElevationScroll.propTypes = {
 
 export default function NavBar() {
   const classes = useStyles();
+  let isLoggedIn = false;
+  let userMenu = null;
+  CheckAuth(isLoggedIn);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -164,6 +180,15 @@ export default function NavBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  if (isLoggedIn) {
+    userMenu = <Fragment>
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+    </Fragment>
+  } else {
+    userMenu = <MenuItem onClick={handleMenuClose}><RouterLink className={classes.signIn} to="/login">Sign in</RouterLink></MenuItem>;
+  }
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -175,8 +200,9 @@ export default function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      {userMenu}
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Logout</MenuItem> */}
     </Menu>
   );
 

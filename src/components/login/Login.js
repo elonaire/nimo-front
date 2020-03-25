@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,6 +14,7 @@ import Container from '@material-ui/core/Container';
 import {
   Link as RouterLink
 } from "react-router-dom";
+import Axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -42,6 +43,45 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [response, setResponse] = useState({});
+
+  const handleFieldInput = (event, field) => {
+    console.log(event.target.value);
+    if (field === 'username') {
+      setUsername(event.target.value);
+    } else if (field === 'password') {
+      setPassword(event.target.value);
+    }
+    
+  }
+
+  let reqBody = {
+    username,
+    password
+  }
+
+  async function login(reqBody) {
+    try {
+      let res = await Axios({
+        method: 'post',
+        url: 'http://34.67.57.125:3000/users/login',
+        data: reqBody
+      });
+    
+      let data = await res.json();
+      setResponse(data);
+    } catch (error) {
+      // console.log(error.response);
+      setResponse(error.response);
+    }
+    
+  }
+
+  console.log(response);
+  
+  
 
   return (
     <Container component="main" maxWidth="sm">
@@ -55,6 +95,8 @@ export default function SignIn() {
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
+          onChange={(e) => handleFieldInput(e, 'username')}
+            value={username}
             variant="outlined"
             margin="normal"
             required
@@ -66,6 +108,8 @@ export default function SignIn() {
             autoFocus
           />
           <TextField
+          onChange={(e) => handleFieldInput(e, 'password')}
+            value={password}
             variant="outlined"
             margin="normal"
             required
@@ -81,7 +125,8 @@ export default function SignIn() {
             label="Remember me"
           />
           <Button
-            type="submit"
+            onClick={() => login(reqBody)}
+            // type="submit"
             fullWidth
             variant="contained"
             color="primary"

@@ -1,242 +1,9 @@
-// import React from "react";
-// import { makeStyles } from "@material-ui/core/styles";
-// import TextField from "@material-ui/core/TextField";
-// import Card from "@material-ui/core/Card";
-// import CardHeader from "@material-ui/core/CardHeader";
-// import CardActions from "@material-ui/core/CardActions";
-// import CardContent from "@material-ui/core/CardContent";
-// import Button from "@material-ui/core/Button";
-// import FormControl from "@material-ui/core/FormControl";
-// import Select from "@material-ui/core/Select";
-// import InputLabel from "@material-ui/core/InputLabel";
-// import MenuItem from "@material-ui/core/MenuItem";
-// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-// import PhotoCamera from "@material-ui/icons/PhotoCamera";
-// // import Typography from "@material-ui/core/Typography";
-
-// const useStyles = makeStyles(theme => ({
-//   root: {
-//     "& > *": {
-//       margin: theme.spacing(1)
-//     }
-//   },
-//   card: {
-//     padding: theme.spacing(2),
-//     textAlign: "center",
-//     alignItems: "center",
-//     width: "50vw"
-//   },
-//   cardHeader: {
-//     backgroundColor: "#41e044",
-//     color: "#fff"
-//   },
-//   field: {
-//     display: "block"
-//   },
-//   addButton: {
-//     backgroundColor: "green",
-//     color: "#fff"
-//   },
-//   formControl: {
-//     margin: theme.spacing(1),
-//     minWidth: 120
-//   },
-//   fileInput: {
-//     display: "none"
-//   },
-//   textArea: {
-//     resize: "none",
-//     width: "100%",
-//     borderRadius: "5px",
-//     border: "0.1em solid gray",
-//     minHeight: "50px"
-//   },
-//   uploadBtn: {
-//     backgroundColor: "green",
-//     color: '#fff'
-//   },
-// }));
-
-// const AddProduct = () => {
-//   const classes = useStyles();
-
-//   const inputLabel = React.useRef(null);
-//   const [labelWidth, setLabelWidth] = React.useState(0);
-//   React.useEffect(() => {
-//     setLabelWidth(inputLabel.current.offsetWidth);
-//   }, []);
-//   return (
-//     <Card elevation={3} className={classes.card}>
-//       <CardHeader
-//         className={classes.cardHeader}
-//         title="Add a New Product"
-//       ></CardHeader>
-//       <CardContent>
-//         <form className={classes.root} noValidate autoComplete="off">
-//           <FormControl
-//             fullWidth
-//             variant="outlined"
-//             className={classes.formControl}
-//           >
-//             <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-//               Category
-//             </InputLabel>
-//             <Select
-//               labelId="demo-simple-select-outlined-label"
-//               id="demo-simple-select-outlined"
-//               //   value={age}
-//               //   onChange={handleChange}
-//               labelWidth={labelWidth}
-//             >
-//               <MenuItem value="">
-//                 <em>None</em>
-//               </MenuItem>
-//               <MenuItem value={10}>Ten</MenuItem>
-//               <MenuItem value={20}>Twenty</MenuItem>
-//               <MenuItem value={30}>Thirty</MenuItem>
-//             </Select>
-//           </FormControl>
-
-//           <FormControl
-//             fullWidth
-//             variant="outlined"
-//             className={classes.formControl}
-//           >
-//             <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-//               Type
-//             </InputLabel>
-//             <Select
-//               labelId="demo-simple-select-outlined-label"
-//               id="demo-simple-select-outlined"
-//               //   value={age}
-//               //   onChange={handleChange}
-//               labelWidth={labelWidth}
-//             >
-//               <MenuItem value="">
-//                 <em>None</em>
-//               </MenuItem>
-//               <MenuItem value={10}>Ten</MenuItem>
-//               <MenuItem value={20}>Twenty</MenuItem>
-//               <MenuItem value={30}>Thirty</MenuItem>
-//             </Select>
-//           </FormControl>
-
-//           <FormControl
-//             fullWidth
-//             variant="outlined"
-//             className={classes.formControl}
-//           >
-//             <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-//               Gender
-//             </InputLabel>
-//             <Select
-//               labelId="demo-simple-select-outlined-label"
-//               id="demo-simple-select-outlined"
-//               //   value={age}
-//               //   onChange={handleChange}
-//               labelWidth={labelWidth}
-//             >
-//               <MenuItem value="">
-//                 <em>None</em>
-//               </MenuItem>
-//               <MenuItem value={10}>Ten</MenuItem>
-//               <MenuItem value={20}>Twenty</MenuItem>
-//               <MenuItem value={30}>Thirty</MenuItem>
-//             </Select>
-//           </FormControl>
-
-//           <FormControl
-//             fullWidth
-//             variant="outlined"
-//             className={classes.formControl}
-//           >
-//             <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-//               Color
-//             </InputLabel>
-//             <Select
-//               labelId="demo-simple-select-outlined-label"
-//               id="demo-simple-select-outlined"
-//               //   value={age}
-//               //   onChange={handleChange}
-//               labelWidth={labelWidth}
-//             >
-//               <MenuItem value="">
-//                 <em>None</em>
-//               </MenuItem>
-//               <MenuItem value={10}>Ten</MenuItem>
-//               <MenuItem value={20}>Twenty</MenuItem>
-//               <MenuItem value={30}>Thirty</MenuItem>
-//             </Select>
-//           </FormControl>
-
-//           <TextField
-//             fullWidth
-//             className={classes.field}
-//             id="outlined-basic"
-//             label="Name"
-//             variant="outlined"
-//           />
-
-//           <TextareaAutosize
-//             className={classes.textArea}
-//             aria-label="minimum height"
-//             rowsMin={3}
-//             placeholder="Description..."
-//           ></TextareaAutosize>
-
-//           <TextField
-//             fullWidth
-//             className={classes.field}
-//             id="outlined-basic"
-//             label="Price"
-//             variant="outlined"
-//           />
-
-//           <TextField
-//             fullWidth
-//             className={classes.field}
-//             id="outlined-basic"
-//             label="Stock"
-//             variant="outlined"
-//           />
-//           <input
-//             accept="image/*"
-//             className={classes.fileInput}
-//             id="contained-button-file"
-//             multiple
-//             type="file"
-//           />
-//           <label htmlFor="contained-button-file">
-//             <Button variant="contained" className={classes.uploadBtn} component="span">
-//               Upload files <PhotoCamera></PhotoCamera>
-//             </Button>
-//           </label>
-//         </form>
-//       </CardContent>
-//       <CardActions>
-//         <Button
-//           fullWidth
-//           size="large"
-//           variant="contained"
-//           className={classes.addButton}
-//         >
-//           Add
-//         </Button>
-//       </CardActions>
-//     </Card>
-//   );
-// };
-
-// export default AddProduct;
-
-import React from "react";
+import React, { useState } from "react";
+import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -246,9 +13,11 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Link as RouterLink } from "react-router-dom";
+// import { Link as RouterLink } from "react-router-dom";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import { Editor } from 'react-draft-wysiwyg';
+import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import Axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -295,9 +64,16 @@ const useStyles = makeStyles(theme => ({
 
 export default function AddProduct() {
   const classes = useStyles();
-  const [gender, setGender] = React.useState("");
-  const [userRole, setRole] = React.useState("");
-  const [productType, setProductType] = React.useState("");
+  const [gender, setGender] = useState("");
+  const [category, setCategory] = useState("");
+  const [productType, setProductType] = useState("");
+  const [color, setColor] = useState("");
+  const [response, setResponse] = useState("");
+  const [productName, setProductName] = useState("");
+  const [stock, setStock] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState(EditorState.createEmpty());
+  const [files, setFiles] = useState({});
 
   const inputLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
@@ -305,10 +81,10 @@ export default function AddProduct() {
     setLabelWidth(inputLabel.current.offsetWidth);
   }, []);
 
-  const roleLabel = React.useRef(null);
-  const [roleLabelWidth, setRoleLabelWidth] = React.useState(0);
+  const categoryLabel = React.useRef(null);
+  const [categoryLabelWidth, setRoleLabelWidth] = React.useState(0);
   React.useEffect(() => {
-    setRoleLabelWidth(roleLabel.current.offsetWidth);
+    setRoleLabelWidth(categoryLabel.current.offsetWidth);
   }, []);
 
   const typeLabel = React.useRef(null);
@@ -317,17 +93,89 @@ export default function AddProduct() {
     setTypeLabelWidth(typeLabel.current.offsetWidth);
   }, []);
 
+  const colorLabel = React.useRef(null);
+  const [colorLabelWidth, setColorLabelWidth] = React.useState(0);
+  React.useEffect(() => {
+    setColorLabelWidth(colorLabel.current.offsetWidth);
+  }, []);
+
   const handleChange = event => {
     setGender(event.target.value);
   };
 
-  const handleRoleChange = event => {
-    setRole(event.target.value);
+  const handleCategoryChange = event => {
+    setCategory(event.target.value);
   };
 
   const handleTypeChange = event => {
     setProductType(event.target.value);
   };
+
+  const handleColorChange = event => {
+    setColor(event.target.value);
+  };
+
+  const handleNameChange = event => {
+    setProductName(event.target.value);
+  };
+
+  const handleStockChange = event => {
+    setStock(event.target.value);
+  };
+
+  const handlePriceChange = event => {
+    setPrice(event.target.value);
+  };
+
+  const handleDescription = description => {
+    setDescription(description);
+  };
+
+  const selectFile = event => {
+    let selectedFiles = event.target.files;
+    console.log(selectedFiles);
+    let productFiles = new FormData();
+
+    console.log(selectedFiles);
+
+    for (const file of Object.keys(selectedFiles)) {
+      productFiles.append(`file${file}`, selectedFiles[file]);
+    }
+    console.log(productFiles);
+    setFiles(productFiles);
+  };
+
+  let reqBody = {
+    name: productName,
+    category,
+    type: productType,
+    gender,
+    color,
+    price,
+    stock,
+    description,
+    files
+  }
+
+  async function addProduct(reqBody) {
+    try {
+      let res = await Axios({
+        method: 'post',
+        url: 'http://34.67.57.125:3000/products/add',
+        data: reqBody
+      });
+
+      let data = await res.json();
+      setResponse(data);
+    } catch (error) {
+      // console.log(error.response);
+      setResponse(error.response);
+    }
+
+  }
+
+  console.log('res', response);
+  
 
   return (
     <Container component="main" maxWidth="sm">
@@ -343,21 +191,26 @@ export default function AddProduct() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel ref={roleLabel} id="role-outlined-label">
+                <InputLabel ref={categoryLabel} id="role-outlined-label">
                   Category
                 </InputLabel>
                 <Select
                   labelId="role-outlined-label"
                   id="role-outlined"
-                  value={userRole}
-                  onChange={handleRoleChange}
-                  labelWidth={roleLabelWidth}
+                  value={category}
+                  onChange={handleCategoryChange}
+                  labelWidth={categoryLabelWidth}
                 >
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value={10}>PUBLIC</MenuItem>
-                  <MenuItem value={20}>ADMIN</MenuItem>
+                  {
+                    () => {
+                      [0, 1, 2].map((category, index) =>
+                        <MenuItem key={index} value={index}>{category}</MenuItem>
+                      )
+                    }
+                  }
                 </Select>
               </FormControl>
             </Grid>
@@ -380,8 +233,13 @@ export default function AddProduct() {
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value={10}>Male</MenuItem>
-                  <MenuItem value={20}>Female</MenuItem>
+                  {
+                    () => {
+                      [0, 1, 2].map((type, index) =>
+                        <MenuItem key={index} value={index}>{type}</MenuItem>
+                      )
+                    }
+                  }
                 </Select>
               </FormControl>
             </Grid>
@@ -413,7 +271,7 @@ export default function AddProduct() {
             <Grid item xs={12}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel
-                  ref={inputLabel}
+                  ref={colorLabel}
                   id="demo-simple-select-outlined-label"
                 >
                   Color
@@ -421,9 +279,9 @@ export default function AddProduct() {
                 <Select
                   labelId="demo-simple-select-outlined-label"
                   id="demo-simple-select-outlined"
-                  value={gender}
-                  onChange={handleChange}
-                  labelWidth={labelWidth}
+                  value={color}
+                  onChange={handleColorChange}
+                  labelWidth={colorLabelWidth}
                 >
                   <MenuItem value="">
                     <em>None</em>
@@ -436,6 +294,8 @@ export default function AddProduct() {
 
             <Grid item xs={12}>
               <TextField
+                value={productName}
+                onChange={handleNameChange}
                 autoComplete="productName"
                 name="productName"
                 variant="outlined"
@@ -447,15 +307,15 @@ export default function AddProduct() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextareaAutosize
-                className={classes.textArea}
-                aria-label="minimum height"
-                rowsMin={3}
-                placeholder="Description..."
-              ></TextareaAutosize>
+              <Editor
+                editorState={description}
+                onEditorStateChange={handleDescription}
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                onChange={handleStockChange}
+                value={stock}
                 variant="outlined"
                 required
                 fullWidth
@@ -467,6 +327,8 @@ export default function AddProduct() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                onChange={handlePriceChange}
+                value={price}
                 variant="outlined"
                 required
                 fullWidth
@@ -476,61 +338,30 @@ export default function AddProduct() {
                 autoComplete="price"
               />
             </Grid>
+
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="phone"
-                label="Phone"
-                name="phone"
-                autoComplete="phone"
+              <input
+                onChange={selectFile}
+                accept="image/*"
+                className={classes.fileInput}
+                id="contained-button-file"
+                multiple
+                type="file"
               />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-            <input
-              accept="image/*"
-              className={classes.fileInput}
-              id="contained-button-file"
-              multiple
-              type="file"
-            />
-            <label htmlFor="contained-button-file">
-              <Button
-                variant="contained"
-                className={classes.uploadBtn}
-                component="span"
-              >
-                Upload files <PhotoCamera></PhotoCamera>
-              </Button>
-            </label>
+              <label htmlFor="contained-button-file">
+                <Button
+                  variant="contained"
+                  className={classes.uploadBtn}
+                  component="span"
+                >
+                  Upload files <PhotoCamera></PhotoCamera>
+                </Button>
+              </label>
             </Grid>
           </Grid>
           <Button
-            type="submit"
+            onClick={() => addProduct(reqBody)}
+            // type="submit"
             fullWidth
             variant="contained"
             color="primary"

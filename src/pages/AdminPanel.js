@@ -4,6 +4,7 @@ import Stats from '../components/stats/Stats';
 import MatTable from '../components/mat-table/MatTable';
 import { makeStyles } from "@material-ui/core/styles";
 // import WorldMap from '../components/map/Map';
+import { createColumns } from "../components/CreateColumns"
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -14,6 +15,17 @@ const useStyles = makeStyles(theme => ({
 
 const AdminPanel = () => {
     const classes = useStyles();
+
+    const columnNames = ['Product ID', 'Stock', 'Pieces sold', 'pending Orders', 'Price']
+    const columnObject = {
+        title: null,
+        field: null
+    }
+
+    let columns = []
+    const data = []
+
+    columns = createColumns(columnNames, columnObject, columns);
 
     return (
         <div className={classes.root}>
@@ -72,7 +84,11 @@ const AdminPanel = () => {
                     xl={9}
                     xs={12}
                 >
-                    <MatTable title="Pending Orders" />
+                    <MatTable
+                        title="Pending Orders"
+                        data={data}
+                        columns={columns}
+                    />
                 </Grid>
                 <Grid
                     item
@@ -99,7 +115,11 @@ const AdminPanel = () => {
                     xl={9}
                     xs={12}
                 >
-                    <MatTable title="Sales" />
+                    <MatTable
+                        title="Sales"
+                        data={data}
+                        columns={columns}
+                    />
                 </Grid>
             </Grid>
         </div>

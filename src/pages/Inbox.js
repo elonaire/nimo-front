@@ -1,9 +1,10 @@
 import React from 'react';
-import MatTable from '../components/mat-table/MatTable';
+// import MatTable from '../components/mat-table/MatTable';
 
 const Inbox = () => {
     return (
-        <MatTable />
+        // <MatTable />
+        <p>Inbox here...</p>
     );
 }
 
