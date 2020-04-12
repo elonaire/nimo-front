@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -15,51 +15,51 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 // import { Link as RouterLink } from "react-router-dom";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
-import { Editor } from 'react-draft-wysiwyg';
-import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import Axios from 'axios';
+import { Editor } from "react-draft-wysiwyg";
+import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import Axios from "axios";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
     backgroundColor: "#60de50",
     "&:hover": {
-      backgroundColor: "#e08455"
+      backgroundColor: "#e08455",
     },
-    color: "#ebebeb"
+    color: "#ebebeb",
   },
   formControl: {
     // margin: theme.spacing(1),
-    minWidth: "100%"
+    minWidth: "100%",
   },
   fileInput: {
-    display: "none"
+    display: "none",
   },
   textArea: {
     resize: "none",
     width: "100%",
     borderRadius: "5px",
     border: "0.1em solid gray",
-    minHeight: "50px"
+    minHeight: "50px",
   },
   uploadBtn: {
     backgroundColor: "green",
-    color: "#fff"
-  }
+    color: "#fff",
+  },
 }));
 
 export default function AddProduct() {
@@ -73,7 +73,7 @@ export default function AddProduct() {
   const [stock, setStock] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState(EditorState.createEmpty());
-  const [files, setFiles] = useState({});
+  const [files, setFiles] = useState(null);
 
   const inputLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
@@ -99,50 +99,42 @@ export default function AddProduct() {
     setColorLabelWidth(colorLabel.current.offsetWidth);
   }, []);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setGender(event.target.value);
   };
 
-  const handleCategoryChange = event => {
+  const handleCategoryChange = (event) => {
     setCategory(event.target.value);
   };
 
-  const handleTypeChange = event => {
+  const handleTypeChange = (event) => {
     setProductType(event.target.value);
   };
 
-  const handleColorChange = event => {
+  const handleColorChange = (event) => {
     setColor(event.target.value);
   };
 
-  const handleNameChange = event => {
+  const handleNameChange = (event) => {
     setProductName(event.target.value);
   };
 
-  const handleStockChange = event => {
+  const handleStockChange = (event) => {
     setStock(event.target.value);
   };
 
-  const handlePriceChange = event => {
+  const handlePriceChange = (event) => {
     setPrice(event.target.value);
   };
 
-  const handleDescription = description => {
+  const handleDescription = (description) => {
     setDescription(description);
   };
 
-  const selectFile = event => {
+  const selectFile = (event) => {
     let selectedFiles = event.target.files;
     console.log(selectedFiles);
-    let productFiles = new FormData();
-
-    console.log(selectedFiles);
-
-    for (const file of Object.keys(selectedFiles)) {
-      productFiles.append(`file${file}`, selectedFiles[file]);
-    }
-    console.log(productFiles);
-    setFiles(productFiles);
+    setFiles(selectedFiles);
   };
 
   let reqBody = {
@@ -153,29 +145,48 @@ export default function AddProduct() {
     color,
     price,
     stock,
-    description,
-    files
+    description
+  };
+
+  let createProductBody = (object, body) => {
+    for (const prop of Object.keys(object)) {
+      if (object === files) {
+        body.append("productFiles", object[prop]);
+      } else {
+        body.append(`${prop}`, object[prop]);
+      }
+    }
   }
 
   async function addProduct(reqBody) {
+    console.log("body", reqBody);
+    let productDetails = new FormData();
+    let token = localStorage.getItem("JWTAUTH");
+
+    createProductBody(reqBody, productDetails);
+    createProductBody(files, productDetails);
+    
+    console.log(productDetails);
+    // reqBody["productFiles"] = productDetails;
+
     try {
       let res = await Axios({
-        method: 'post',
-        url: 'http://34.67.57.125:3000/products/add',
-        data: reqBody
+        method: "post",
+        url: "http://localhost:3000/products/add",
+        data: productDetails,
+        headers: {
+          Authorization: token
+        }
       });
 
-      let data = await res.json();
-      setResponse(data);
+      setResponse(res.data);
     } catch (error) {
       // console.log(error.response);
       setResponse(error.response);
     }
-
   }
 
-  console.log('res', response);
-  
+  console.log("res", response);
 
   return (
     <Container component="main" maxWidth="sm">
@@ -201,16 +212,16 @@ export default function AddProduct() {
                   onChange={handleCategoryChange}
                   labelWidth={categoryLabelWidth}
                 >
-                  <MenuItem value="">
+                  <MenuItem value="ssds">
                     <em>None</em>
                   </MenuItem>
-                  {
-                    () => {
-                      [0, 1, 2].map((category, index) =>
-                        <MenuItem key={index} value={index}>{category}</MenuItem>
-                      )
-                    }
-                  }
+                  {() => {
+                    ["0", "1", "2"].map((category, index) => (
+                      <MenuItem key={index} value={category}>
+                        {category}
+                      </MenuItem>
+                    ));
+                  }}
                 </Select>
               </FormControl>
             </Grid>
@@ -230,16 +241,16 @@ export default function AddProduct() {
                   onChange={handleTypeChange}
                   labelWidth={typeLabelWidth}
                 >
-                  <MenuItem value="">
+                  <MenuItem value="sdds">
                     <em>None</em>
                   </MenuItem>
-                  {
-                    () => {
-                      [0, 1, 2].map((type, index) =>
-                        <MenuItem key={index} value={index}>{type}</MenuItem>
-                      )
-                    }
-                  }
+                  {() => {
+                    ["0", "1", "2"].map((type, index) => (
+                      <MenuItem key={index} value={type}>
+                        {type}
+                      </MenuItem>
+                    ));
+                  }}
                 </Select>
               </FormControl>
             </Grid>
@@ -259,11 +270,11 @@ export default function AddProduct() {
                   onChange={handleChange}
                   labelWidth={labelWidth}
                 >
-                  <MenuItem value="">
+                  <MenuItem value="sds">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value={10}>Male</MenuItem>
-                  <MenuItem value={20}>Female</MenuItem>
+                  <MenuItem value="Male">Male</MenuItem>
+                  <MenuItem value="Female">Female</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -283,11 +294,11 @@ export default function AddProduct() {
                   onChange={handleColorChange}
                   labelWidth={colorLabelWidth}
                 >
-                  <MenuItem value="">
+                  <MenuItem value="ddd">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value={10}>Male</MenuItem>
-                  <MenuItem value={20}>Female</MenuItem>
+                  <MenuItem value="Yellow">Yellow</MenuItem>
+                  <MenuItem value="Green">Green</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -343,6 +354,7 @@ export default function AddProduct() {
               <input
                 onChange={selectFile}
                 accept="image/*"
+                name="productFiles"
                 className={classes.fileInput}
                 id="contained-button-file"
                 multiple

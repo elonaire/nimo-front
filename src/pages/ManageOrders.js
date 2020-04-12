@@ -5,15 +5,15 @@ import { createColumns } from "../components/CreateColumns"
 
 export default function ManageOrders() {
   const columnNames = ['Order ID', 'Date', 'Quantity', 'Product', 'Status']
-  const columnObject = {
-    title: null,
-    field: null
-  }
+  // const columnObject = {
+  //   title: null,
+  //   field: null
+  // }
 
   let columns = []
   const data = []
 
-  columns = createColumns(columnNames, columnObject, columns);
+  columns = createColumns(columnNames);
 
   return (
     <Grid container spacing={1}>
