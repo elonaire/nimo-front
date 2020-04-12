@@ -60,11 +60,15 @@ export default function SignIn(props) {
     password,
   };
 
+  let devRemote = "http://192.168.214.206:3000/users/login";
+  let devLocal = "http://localhost/users/login";
+  let production = "http://34.67.57.125:3000/users/login";
+
   let login = async (reqBody) => {
     try {
       let res = await Axios({
         method: "post",
-        url: "http://192.168.214.206:3000/users/login",
+        url: production,
         data: reqBody,
       });
 

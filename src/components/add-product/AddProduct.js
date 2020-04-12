@@ -145,7 +145,7 @@ export default function AddProduct() {
     color,
     price,
     stock,
-    description
+    description,
   };
 
   let createProductBody = (object, body) => {
@@ -156,7 +156,7 @@ export default function AddProduct() {
         body.append(`${prop}`, object[prop]);
       }
     }
-  }
+  };
 
   async function addProduct(reqBody) {
     console.log("body", reqBody);
@@ -165,18 +165,22 @@ export default function AddProduct() {
 
     createProductBody(reqBody, productDetails);
     createProductBody(files, productDetails);
-    
+
     console.log(productDetails);
     // reqBody["productFiles"] = productDetails;
+
+    let devRemote = "http://192.168.214.206:3000/users/login";
+    let devLocal = "http://localhost/users/login";
+    let production = "http://34.67.57.125:3000/users/login";
 
     try {
       let res = await Axios({
         method: "post",
-        url: "http://localhost:3000/products/add",
+        url: production,
         data: productDetails,
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       });
 
       setResponse(res.data);
