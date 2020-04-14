@@ -18,6 +18,7 @@ import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import { Editor } from "react-draft-wysiwyg";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Axios from "axios";
+import AlertDialog from "../feedback/Dialog";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -74,6 +75,7 @@ export default function AddProduct() {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState(EditorState.createEmpty());
   const [files, setFiles] = useState(null);
+  let feedback;
 
   const inputLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
@@ -158,6 +160,12 @@ export default function AddProduct() {
     }
   };
 
+  let resetForm = (setFieldStateArray) => {
+    for (let i = 0; i < setFieldStateArray.length; i++) {
+      setFieldStateArray[i]("");
+    }
+  };
+
   async function addProduct(reqBody) {
     console.log("body", reqBody);
     let productDetails = new FormData();
@@ -169,14 +177,18 @@ export default function AddProduct() {
     console.log(productDetails);
     // reqBody["productFiles"] = productDetails;
 
-    let devRemote = "http://192.168.214.206:3000/users/login";
-    let devLocal = "http://localhost/users/login";
-    let production = "http://34.67.57.125:3000/users/login";
+    let url;
+
+    if (process.env.NODE_ENV === "development") {
+      url = process.env.REACT_APP_DEV_REMOTE;
+    } else if (process.env.NODE_ENV === "production") {
+      url = process.env.REACT_APP_PRODUCTION;
+    }
 
     try {
       let res = await Axios({
         method: "post",
-        url: production,
+        url: `${url + '/products/add'}`,
         data: productDetails,
         headers: {
           Authorization: token,
@@ -184,13 +196,27 @@ export default function AddProduct() {
       });
 
       setResponse(res.data);
+      let setStateArray = [
+        setGender,
+        setCategory,
+        setProductType,
+        setColor,
+        setResponse,
+        setProductName,
+        setStock,
+        setPrice,
+        setDescription,
+        setFiles,
+      ];
+      resetForm(setStateArray);
+      feedback = <AlertDialog message="Product successfully added!" />;
     } catch (error) {
       // console.log(error.response);
       setResponse(error.response);
     }
   }
 
-  console.log("res", response);
+  // console.log("res", response);
 
   return (
     <Container component="main" maxWidth="sm">
@@ -373,6 +399,7 @@ export default function AddProduct() {
                   Upload files <PhotoCamera></PhotoCamera>
                 </Button>
               </label>
+              {feedback}
             </Grid>
           </Grid>
           <Button

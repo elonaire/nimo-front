@@ -1,57 +1,65 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import {
-  Link as RouterLink
-} from "react-router-dom";
+import React from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Checkbox from '@material-ui/core/Checkbox';
+// import Link from '@material-ui/core/Link';
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import Axios from "axios";
+// import {
+//   Link as RouterLink
+// } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    backgroundColor: '#60de50',
-    '&:hover': {
-      backgroundColor: '#e08455'
+    backgroundColor: "#60de50",
+    "&:hover": {
+      backgroundColor: "#e08455",
     },
-    color: '#ebebeb'
+    color: "#ebebeb",
   },
   formControl: {
     // margin: theme.spacing(1),
-    minWidth: '100%',
+    minWidth: "100%",
   },
 }));
 
-export default function SignUp() {
+export default function AddUser() {
   const classes = useStyles();
-  const [gender, setGender] = React.useState('');
-  const [userRole, setRole] = React.useState('');
+  const [gender, setGender] = React.useState("");
+  const [userRole, setRole] = React.useState("");
+  const [username, setUsername] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [response, setResponse] = React.useState(null);
 
   const inputLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
@@ -65,13 +73,69 @@ export default function SignUp() {
     setRoleLabelWidth(roleLabel.current.offsetWidth);
   }, []);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setGender(event.target.value);
   };
 
-  const handleRoleChange = event => {
+  const handleRoleChange = (event) => {
     setRole(event.target.value);
-  }
+  };
+
+  const handleInputChanges = (event, cb) => {
+    cb(event.target.value);
+  };
+
+  let resetForm = (setFieldStateArray) => {
+    for (let i = 0; i < setFieldStateArray.length; i++) {
+      setFieldStateArray[i]("");
+    }
+  };
+
+  let reqBody = {
+    user_role: userRole,
+    gender,
+    username,
+    email,
+    first_name: firstName,
+    last_name: lastName,
+    phone,
+    password,
+  };
+
+  let addUser = async (reqBody) => {
+    console.log(reqBody);
+    
+    let url;
+
+    if (process.env.NODE_ENV === "development") {
+      url = process.env.REACT_APP_DEV_REMOTE;
+    } else if (process.env.NODE_ENV === "production") {
+      url = process.env.REACT_APP_PRODUCTION;
+    }
+
+    try {
+      let res = await Axios({
+        method: "post",
+        url: `${url + '/users/add-user'}`,
+        data: reqBody
+      });
+
+      setResponse(res.data);
+      let setStateArray = [
+        setGender,
+        setRole,
+        setUsername,
+        setFirstName,
+        setLastName,
+        setPhone,
+        setEmail,
+        setPassword,
+      ];
+      resetForm(setStateArray);
+    } catch (error) {
+      setResponse(error.response);
+    }
+  };
 
   return (
     <Container component="main" maxWidth="sm">
@@ -85,11 +149,11 @@ export default function SignUp() {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-          <Grid item xs={12}>
+            <Grid item xs={12}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel ref={roleLabel} id="role-outlined-label">
                   User Role
-              </InputLabel>
+                </InputLabel>
                 <Select
                   labelId="role-outlined-label"
                   id="role-outlined"
@@ -100,13 +164,15 @@ export default function SignUp() {
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
-                  <MenuItem value={10}>PUBLIC</MenuItem>
-                  <MenuItem value={20}>ADMIN</MenuItem>
+                  <MenuItem value="PUBLIC">PUBLIC</MenuItem>
+                  <MenuItem value="ADMIN">ADMIN</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                value={firstName}
+                onChange={(e) => handleInputChanges(e, setFirstName)}
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
@@ -119,6 +185,8 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                value={lastName}
+                onChange={(e) => handleInputChanges(e, setLastName)}
                 variant="outlined"
                 required
                 fullWidth
@@ -130,6 +198,8 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                value={username}
+                onChange={(e) => handleInputChanges(e, setUsername)}
                 variant="outlined"
                 required
                 fullWidth
@@ -141,9 +211,12 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
+                <InputLabel
+                  ref={inputLabel}
+                  id="demo-simple-select-outlined-label"
+                >
                   Gender
-              </InputLabel>
+                </InputLabel>
                 <Select
                   labelId="demo-simple-select-outlined-label"
                   id="demo-simple-select-outlined"
@@ -161,6 +234,8 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                value={phone}
+                onChange={(e) => handleInputChanges(e, setPhone)}
                 variant="outlined"
                 required
                 fullWidth
@@ -172,6 +247,8 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                value={email}
+                onChange={(e) => handleInputChanges(e, setEmail)}
                 variant="outlined"
                 required
                 fullWidth
@@ -183,6 +260,8 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                value={password}
+                onChange={(e) => handleInputChanges(e, setPassword)}
                 variant="outlined"
                 required
                 fullWidth
@@ -201,7 +280,8 @@ export default function SignUp() {
             </Grid> */}
           </Grid>
           <Button
-            type="button"
+            onClick={() => addUser(reqBody)}
+            // type="button"
             fullWidth
             variant="contained"
             color="primary"

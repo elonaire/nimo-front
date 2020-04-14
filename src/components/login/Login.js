@@ -60,15 +60,19 @@ export default function SignIn(props) {
     password,
   };
 
-  let devRemote = "http://192.168.214.206:3000/users/login";
-  let devLocal = "http://localhost/users/login";
-  let production = "http://34.67.57.125:3000/users/login";
+  let url;
+
+  if (process.env.NODE_ENV === "development") {
+    url = process.env.REACT_APP_DEV_REMOTE;
+  } else if (process.env.NODE_ENV === "production") {
+    url = process.env.REACT_APP_PRODUCTION;
+  }
 
   let login = async (reqBody) => {
     try {
       let res = await Axios({
         method: "post",
-        url: production,
+        url: `${url + '/users/login'}`,
         data: reqBody,
       });
 
@@ -83,13 +87,12 @@ export default function SignIn(props) {
     localStorage.setItem("JWTAUTH", response.JWTAUTH);
     localStorage.setItem("userRole", response.user.userRole);
 
-    let userRole = localStorage.getItem('userRole');
-    let token = localStorage.getItem('JWTAUTH');
+    let userRole = localStorage.getItem("userRole");
+    let token = localStorage.getItem("JWTAUTH");
 
-    console.log('userRole', userRole);
-    
+    console.log("userRole", userRole);
 
-    if (userRole === 'ADMIN' && token) {
+    if (userRole === "ADMIN" && token) {
       auth.login(() => {
         props.history.push("/admin-dashboard");
       });
