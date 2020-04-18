@@ -23,17 +23,18 @@ export default function MatTable(props) {
             columns={state.columns}
             data={state.data}
             editable={{
-                onRowAdd: newData =>
-                    new Promise(resolve => {
-                        setTimeout(() => {
-                            resolve();
-                            setState(prevState => {
-                                const data = [...prevState.data];
-                                data.push(newData);
-                                return { ...prevState, data };
-                            });
-                        }, 600);
-                    }),
+                // onRowAdd: newData =>
+                //     new Promise(resolve => {
+                //         setTimeout(() => {
+                //             resolve();
+                //             setState(prevState => {
+                //                 const data = [...prevState.data];
+                //                 data.push(newData);
+                //                 return { ...prevState, data };
+                //             });
+                //         }, 600);
+                //     })
+                onRowAdd: undefined,
                 onRowUpdate: (newData, oldData) =>
                     new Promise(resolve => {
                         setTimeout(() => {

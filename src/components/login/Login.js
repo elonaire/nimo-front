@@ -44,7 +44,7 @@ export default function SignIn(props) {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [response, setResponse] = useState({});
+  const [response, setResponse] = useState(null);
 
   const handleFieldInput = (event, field) => {
     console.log(event.target.value);
@@ -83,7 +83,7 @@ export default function SignIn(props) {
     }
   };
 
-  if (response.user) {
+  if (response && response.user) {
     localStorage.setItem("JWTAUTH", response.JWTAUTH);
     localStorage.setItem("userRole", response.user.userRole);
 

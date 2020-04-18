@@ -9,7 +9,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
-import AddPost from '../components/blog/AddPost'
+import AddPost from '../components/blog/AddPost';
+import Axios from 'axios';
+import * as moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   
@@ -38,20 +40,66 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
+let tableData;
+const fetchPosts = async () => {
+  let url;
+
+  if (process.env.NODE_ENV === "development") {
+    url = process.env.REACT_APP_DEV_REMOTE;
+  } else if (process.env.NODE_ENV === "production") {
+    url = process.env.REACT_APP_PRODUCTION;
+  }
+
+  let users = await Axios({
+    method: "get",
+    url: `${url + '/blog'}`,
+  });
+
+  let rows = [];
+
+  for (let i = 0; i < users.data.length; i++) {
+    let { title, author, createdAt } = users.data[i];
+
+    let row = {
+      title,
+      author,
+      link: `${url + '/blog'}`,
+      date: moment(createdAt).format('LLLL'),
+      numberOfComments: 0,
+    };
+
+    rows.push(row);
+  }
+  console.log("rows", rows);
+
+  tableData = rows;
+};
+fetchPosts();
+
 const ManageBlog = () => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
+  const [data, setData] = useState(tableData);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  React.useEffect(() => {
+    let isCancelled = false;
+    if (!isCancelled) {
+      fetchPosts();
+      setData(tableData);
+    }
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
   const columnNames = ["Title", "Author", "Date", "Number of comments", "Link"];
 
-  let columns = [];
-  const data = [];
-
-  columns = createColumns(columnNames);
+  let columns = createColumns(columnNames);
 
   return (
     <Grid container spacing={1}>

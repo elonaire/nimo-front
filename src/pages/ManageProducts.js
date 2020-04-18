@@ -70,9 +70,16 @@ const ManageProducts = () => {
   };
 
   useEffect(() => {
-    fetchProducts();
-    setData(tableData);
-  });
+    let isCancelled = false;
+    if (!isCancelled) {
+      fetchProducts();
+      setData(tableData);
+    }
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [data]);
 
   const columnNames = [
     "Name",

@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Eco from "@material-ui/icons/Eco";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -22,7 +22,7 @@ import AlertDialog from "../feedback/Dialog";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -50,12 +50,12 @@ const useStyles = makeStyles((theme) => ({
   fileInput: {
     display: "none",
   },
-  textArea: {
+  editor: {
     resize: "none",
     width: "100%",
     borderRadius: "5px",
-    border: "0.1em solid gray",
-    minHeight: "50px",
+    border: "0.05em solid gray",
+    minHeight: "100px",
   },
   uploadBtn: {
     backgroundColor: "green",
@@ -223,7 +223,7 @@ export default function AddProduct() {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+          <Eco />
         </Avatar>
         <Typography component="h1" variant="h5">
           Add a New Product
@@ -245,13 +245,13 @@ export default function AddProduct() {
                   <MenuItem value="ssds">
                     <em>None</em>
                   </MenuItem>
-                  {() => {
+                  {/* {() => {
                     ["0", "1", "2"].map((category, index) => (
                       <MenuItem key={index} value={category}>
                         {category}
                       </MenuItem>
                     ));
-                  }}
+                  }} */}
                 </Select>
               </FormControl>
             </Grid>
@@ -274,13 +274,13 @@ export default function AddProduct() {
                   <MenuItem value="sdds">
                     <em>None</em>
                   </MenuItem>
-                  {() => {
+                  {/* {() => {
                     ["0", "1", "2"].map((type, index) => (
                       <MenuItem key={index} value={type}>
                         {type}
                       </MenuItem>
                     ));
-                  }}
+                  }} */}
                 </Select>
               </FormControl>
             </Grid>
@@ -349,6 +349,7 @@ export default function AddProduct() {
             </Grid>
             <Grid item xs={12}>
               <Editor
+              editorClassName={classes.editor}
                 editorState={description}
                 onEditorStateChange={handleDescription}
               />

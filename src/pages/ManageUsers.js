@@ -9,6 +9,7 @@ import Tab from "@material-ui/core/Tab";
 import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
 import Axios from 'axios';
+import * as moment from 'moment';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,8 +58,8 @@ const fetchUsers = async () => {
       firstName: first_name,
       lastName: last_name,
       role: user_role,
-      lastLogin: createdAt,
-      dateOfRegistration: createdAt,
+      lastLogin: moment(createdAt).format('LLLL'),
+      dateOfRegistration: moment(createdAt).format('LLLL'),
     };
 
     rows.push(row);
@@ -78,9 +79,16 @@ const ManageUsers = () => {
   };
 
   React.useEffect(() => {
-    fetchUsers();
-    setData(tableData);
-  });
+    let isCancelled = false;
+    if (!isCancelled) {
+      fetchUsers();
+      setData(tableData);
+    }
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   const columnNames = [
     "First Name",

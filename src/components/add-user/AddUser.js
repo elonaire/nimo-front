@@ -7,7 +7,7 @@ import TextField from "@material-ui/core/TextField";
 // import Checkbox from '@material-ui/core/Checkbox';
 // import Link from '@material-ui/core/Link';
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import PersonAdd from "@material-ui/icons/PersonAdd";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -22,7 +22,7 @@ import Axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -142,7 +142,7 @@ export default function AddUser() {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+          <PersonAdd />
         </Avatar>
         <Typography component="h1" variant="h5">
           Add a New User
