@@ -1,70 +1,62 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-// import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-// import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
-// import FavoriteIcon from "@material-ui/icons/Favorite";
-// import ShareIcon from "@material-ui/icons/Share";
 import { Divider } from "@material-ui/core";
-import { ReadOnlyRating } from "../rating/Rating";
 import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
+import { Link as RouterLink } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(2),
+    width: "auto",
+  },
   root: {
-    width: '15vw',
-    marginTop: "2%",
-    boxShadow: '0',
+    display: "flex",
+    flexDirection: "column",
+    margin: "auto 2%",
   },
   media: {
     height: 0,
     paddingTop: "56.25%", // 16:9
     // marginTop: "2%"
   },
-  expand: {
-    transform: "rotate(0deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest
-    })
-  },
-  expandOpen: {
-    transform: "rotate(180deg)"
-  },
   avatar: {
-    backgroundColor: red[500]
+    backgroundColor: red[500],
   },
   actions: {
-    display: "flex",
-    flexDirection: "column",
+    margin: "5% auto",
+    width: "70%",
+    color: "green",
+    borderColor: "green",
   },
   product: {
+    display: "flex",
+    flexDirection: "column",
     textDecoration: "none",
     // marginLeft: "2%",
     "&:hover": {
-      textDecoration: "none"
-    }
+      textDecoration: "none",
+    },
   },
-  actions: {
-    paddingLeft: '15%'
-  }
+  content: {
+    textAlign: "center",
+  },
 }));
 
-export default function Product() {
+export default function Product(props) {
   const classes = useStyles();
   // const [] = React.useState(false);
 
   return (
-    <Card className={classes.root}>
-      <Link
+    <Card variant="outlined" elevation={0} className={classes.root} square>
+      <RouterLink
         className={classes.product}
         color="inherit"
-        href="https://material-ui.com/"
+        to={"/products/" + props.productDetails.product_id}
       >
         <CardMedia
           className={classes.media}
@@ -72,23 +64,18 @@ export default function Product() {
           title="Black Castor Oil"
         />
         <Divider />
-        <CardContent>
+        <CardContent className={classes.content}>
           <Typography variant="body2" color="textSecondary" component="h4">
-            Black Castor Oil
+            {props.productDetails.name}
           </Typography>
           <Typography variant="body2" color="textPrimary" component="p">
-            Kshs. 400
+            Kshs. {props.productDetails.price}
           </Typography>
         </CardContent>
-      </Link>
-      <CardActions disableSpacing>
-        <div className={classes.actions}>
-          <ReadOnlyRating />
-          <Button variant="outlined" color="primary">
-            Add to Cart
-          </Button>
-        </div>
-      </CardActions>
+      </RouterLink>
+      <Button className={classes.actions} variant="outlined" square="true">
+        Add to Cart
+      </Button>
     </Card>
   );
 }

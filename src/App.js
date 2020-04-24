@@ -5,6 +5,7 @@ import LoginPage from "./pages/Login";
 import RegistrationPage from "./pages/Register";
 import AdminNav from "./components/admin-nav/AdminNav";
 import Blog from "./pages/Blog";
+import ProductDetails from "./pages/ProductDetails";
 import {
   BrowserRouter as Router,
   Switch,
@@ -28,6 +29,7 @@ function App() {
           <ProtectedRoute exact component={AdminNav} path="/admin-dashboard" />
           <Route exact component={Blog} path="/blog" />
           <Route exact component={UserAccount} path="/profile/:userId" />
+          <Route exact component={ProductDetails} path="/products/:productId" />
         </Switch>
       </div>
     </Router>

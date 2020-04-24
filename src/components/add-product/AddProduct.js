@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -17,8 +17,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import { Editor } from "react-draft-wysiwyg";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Axios from "axios";
-import AlertDialog from "../feedback/Dialog";
+import { Product } from "../utils/ApiCalls";
+import CircularIndeterminate from "../feedback/Circular";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddProduct() {
   const classes = useStyles();
+  const productsAPI = new Product(process.env.NODE_ENV);
   const [gender, setGender] = useState("");
   const [category, setCategory] = useState("");
   const [productType, setProductType] = useState("");
@@ -75,6 +76,7 @@ export default function AddProduct() {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState(EditorState.createEmpty());
   const [files, setFiles] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   let feedback;
 
   const inputLabel = React.useRef(null);
@@ -101,32 +103,8 @@ export default function AddProduct() {
     setColorLabelWidth(colorLabel.current.offsetWidth);
   }, []);
 
-  const handleChange = (event) => {
-    setGender(event.target.value);
-  };
-
-  const handleCategoryChange = (event) => {
-    setCategory(event.target.value);
-  };
-
-  const handleTypeChange = (event) => {
-    setProductType(event.target.value);
-  };
-
-  const handleColorChange = (event) => {
-    setColor(event.target.value);
-  };
-
-  const handleNameChange = (event) => {
-    setProductName(event.target.value);
-  };
-
-  const handleStockChange = (event) => {
-    setStock(event.target.value);
-  };
-
-  const handlePriceChange = (event) => {
-    setPrice(event.target.value);
+  const handleInputChange = (event, stateSetter) => {
+    stateSetter(event.target.value);
   };
 
   const handleDescription = (description) => {
@@ -160,63 +138,31 @@ export default function AddProduct() {
     }
   };
 
-  let resetForm = (setFieldStateArray) => {
-    for (let i = 0; i < setFieldStateArray.length; i++) {
-      setFieldStateArray[i]("");
-    }
-  };
-
-  async function addProduct(reqBody) {
-    console.log("body", reqBody);
+  let submitProduct = () => {
+    setIsSubmitting(true);
     let productDetails = new FormData();
     let token = localStorage.getItem("JWTAUTH");
+    let setStateArray = [
+      setGender,
+      setCategory,
+      setProductType,
+      setColor,
+      setResponse,
+      setProductName,
+      setStock,
+      setPrice,
+      setDescription,
+      setFiles,
+    ];
 
     createProductBody(reqBody, productDetails);
     createProductBody(files, productDetails);
-
-    console.log(productDetails);
-    // reqBody["productFiles"] = productDetails;
-
-    let url;
-
-    if (process.env.NODE_ENV === "development") {
-      url = process.env.REACT_APP_DEV_REMOTE;
-    } else if (process.env.NODE_ENV === "production") {
-      url = process.env.REACT_APP_PRODUCTION;
-    }
-
-    try {
-      let res = await Axios({
-        method: "post",
-        url: `${url + '/products/add'}`,
-        data: productDetails,
-        headers: {
-          Authorization: token,
-        },
-      });
-
-      setResponse(res.data);
-      let setStateArray = [
-        setGender,
-        setCategory,
-        setProductType,
-        setColor,
-        setResponse,
-        setProductName,
-        setStock,
-        setPrice,
-        setDescription,
-        setFiles,
-      ];
-      resetForm(setStateArray);
-      feedback = <AlertDialog message="Product successfully added!" />;
-    } catch (error) {
-      // console.log(error.response);
-      setResponse(error.response);
-    }
-  }
-
-  // console.log("res", response);
+    productsAPI.addProduct(setResponse, setStateArray, {
+      productDetails,
+      token,
+      setIsLoading: setIsSubmitting,
+    });
+  };
 
   return (
     <Container component="main" maxWidth="sm">
@@ -228,192 +174,203 @@ export default function AddProduct() {
         <Typography component="h1" variant="h5">
           Add a New Product
         </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel ref={categoryLabel} id="role-outlined-label">
-                  Category
-                </InputLabel>
-                <Select
-                  labelId="role-outlined-label"
-                  id="role-outlined"
-                  value={category}
-                  onChange={handleCategoryChange}
-                  labelWidth={categoryLabelWidth}
-                >
-                  <MenuItem value="ssds">
-                    <em>None</em>
-                  </MenuItem>
-                  {/* {() => {
-                    ["0", "1", "2"].map((category, index) => (
+        {isSubmitting && (
+          <Fragment>
+            <CircularIndeterminate />
+          </Fragment>
+        )}
+        {!isSubmitting && (
+          <form className={classes.form} noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel
+                    required
+                    ref={categoryLabel}
+                    id="role-outlined-label"
+                  >
+                    Category
+                  </InputLabel>
+                  <Select
+                    labelId="role-outlined-label"
+                    id="role-outlined"
+                    value={category}
+                    onChange={(e) => handleInputChange(e, setCategory)}
+                    labelWidth={categoryLabelWidth}
+                  >
+                    <MenuItem value="ssds">
+                      <em>None</em>
+                    </MenuItem>
+                    {["0", "1", "2"].map((category, index) => (
                       <MenuItem key={index} value={category}>
                         {category}
                       </MenuItem>
-                    ));
-                  }} */}
-                </Select>
-              </FormControl>
-            </Grid>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
 
-            <Grid item xs={12}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel
-                  ref={typeLabel}
-                  id="demo-simple-select-outlined-label"
-                >
-                  Type
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={productType}
-                  onChange={handleTypeChange}
-                  labelWidth={typeLabelWidth}
-                >
-                  <MenuItem value="sdds">
-                    <em>None</em>
-                  </MenuItem>
-                  {/* {() => {
-                    ["0", "1", "2"].map((type, index) => (
+              <Grid item xs={12}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel
+                    ref={typeLabel}
+                    id="demo-simple-select-outlined-label"
+                    required
+                  >
+                    Type
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={productType}
+                    onChange={(e) => handleInputChange(e, setProductType)}
+                    labelWidth={typeLabelWidth}
+                  >
+                    <MenuItem value="sdds">
+                      <em>None</em>
+                    </MenuItem>
+                    {["0", "1", "2"].map((type, index) => (
                       <MenuItem key={index} value={type}>
                         {type}
                       </MenuItem>
-                    ));
-                  }} */}
-                </Select>
-              </FormControl>
-            </Grid>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
 
-            <Grid item xs={12}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel
-                  ref={inputLabel}
-                  id="demo-simple-select-outlined-label"
-                >
-                  Gender
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={gender}
-                  onChange={handleChange}
-                  labelWidth={labelWidth}
-                >
-                  <MenuItem value="sds">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value="Male">Male</MenuItem>
-                  <MenuItem value="Female">Female</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+              <Grid item xs={12}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel
+                    ref={inputLabel}
+                    id="demo-simple-select-outlined-label"
+                    required
+                  >
+                    Gender
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={gender}
+                    onChange={(e) => handleInputChange(e, setGender)}
+                    labelWidth={labelWidth}
+                  >
+                    <MenuItem value="sds">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
 
-            <Grid item xs={12}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel
-                  ref={colorLabel}
-                  id="demo-simple-select-outlined-label"
-                >
-                  Color
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={color}
-                  onChange={handleColorChange}
-                  labelWidth={colorLabelWidth}
-                >
-                  <MenuItem value="ddd">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value="Yellow">Yellow</MenuItem>
-                  <MenuItem value="Green">Green</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+              <Grid item xs={12}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel
+                    ref={colorLabel}
+                    id="demo-simple-select-outlined-label"
+                    required
+                  >
+                    Color
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={color}
+                    onChange={(e) => handleInputChange(e, setColor)}
+                    labelWidth={colorLabelWidth}
+                  >
+                    <MenuItem value="ddd">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value="Yellow">Yellow</MenuItem>
+                    <MenuItem value="Green">Green</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
 
-            <Grid item xs={12}>
-              <TextField
-                value={productName}
-                onChange={handleNameChange}
-                autoComplete="productName"
-                name="productName"
-                variant="outlined"
-                required
-                fullWidth
-                id="productName"
-                label="Product Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Editor
-              editorClassName={classes.editor}
-                editorState={description}
-                onEditorStateChange={handleDescription}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                onChange={handleStockChange}
-                value={stock}
-                variant="outlined"
-                required
-                fullWidth
-                id="stock"
-                label="Stock"
-                name="stock"
-                autoComplete="stock"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                onChange={handlePriceChange}
-                value={price}
-                variant="outlined"
-                required
-                fullWidth
-                id="price"
-                label="Price"
-                name="price"
-                autoComplete="price"
-              />
-            </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  value={productName}
+                  onChange={(e) => handleInputChange(e, setProductName)}
+                  autoComplete="productName"
+                  name="productName"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="productName"
+                  label="Product Name"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Editor
+                  placeholder="Description..."
+                  editorClassName={classes.editor}
+                  editorState={description}
+                  onEditorStateChange={handleDescription}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  onChange={(e) => handleInputChange(e, setStock)}
+                  value={stock}
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="stock"
+                  label="Stock"
+                  name="stock"
+                  autoComplete="stock"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  onChange={(e) => handleInputChange(e, setPrice)}
+                  value={price}
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="price"
+                  label="Price"
+                  name="price"
+                  autoComplete="price"
+                />
+              </Grid>
 
-            <Grid item xs={12}>
-              <input
-                onChange={selectFile}
-                accept="image/*"
-                name="productFiles"
-                className={classes.fileInput}
-                id="contained-button-file"
-                multiple
-                type="file"
-              />
-              <label htmlFor="contained-button-file">
-                <Button
-                  variant="contained"
-                  className={classes.uploadBtn}
-                  component="span"
-                >
-                  Upload files <PhotoCamera></PhotoCamera>
-                </Button>
-              </label>
-              {feedback}
+              <Grid item xs={12}>
+                <input
+                  onChange={selectFile}
+                  accept="image/*"
+                  name="productFiles"
+                  className={classes.fileInput}
+                  id="contained-button-file"
+                  multiple
+                  type="file"
+                />
+                <label htmlFor="contained-button-file">
+                  <Button
+                    variant="contained"
+                    className={classes.uploadBtn}
+                    component="span"
+                  >
+                    Upload files <PhotoCamera></PhotoCamera>
+                  </Button>
+                </label>
+                {feedback}
+              </Grid>
             </Grid>
-          </Grid>
-          <Button
-            onClick={() => addProduct(reqBody)}
-            // type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Add Product
-          </Button>
-        </form>
+            <Button
+              onClick={() => submitProduct()}
+              // type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Add Product
+            </Button>
+          </form>
+        )}
       </div>
     </Container>
   );

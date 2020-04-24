@@ -2,16 +2,17 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
+// import Card from "@material-ui/core/Card";
+// import CardMedia from "@material-ui/core/CardMedia";
 import Carousel from "../carousel/Carousel";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    marginTop: "2%"
   },
   media: {
-    height: '100%',
+    height: "100%",
     // paddingTop: "56.25%", // 16:9
     marginTop: "2%",
     // minHeight: "40vh"
@@ -21,19 +22,19 @@ const useStyles = makeStyles(theme => ({
     color: "#fff",
     "&:hover": {
       backgroundColor: "green",
-      color: "#fff"
-    }
+      color: "#fff",
+    },
   },
   categoryHIcon: {
-    color: "#fff"
+    color: "#fff",
   },
   categoryList: {
     paddingTop: "0",
-    paddingBottom: "0"
+    paddingBottom: "0",
   },
   logo: {
-    marginTop: '3vw'
-  }
+    marginTop: "3vw",
+  },
 }));
 
 export default function ProductNav() {
@@ -42,8 +43,9 @@ export default function ProductNav() {
   return (
     <div className={classes.root}>
       <Grid container spacing={0}>
-        <Grid item xs={3}>
-          <Card className={classes.logo}>
+        <Grid item xs={12}>
+          <Carousel />
+          {/* <Card className={classes.logo}>
             <CardMedia
               component="img"
               className={classes.media}
@@ -51,11 +53,11 @@ export default function ProductNav() {
               title="Welcome to Nimo Naturals"
             />
           </Card>
-          <Divider />
+          <Divider /> */}
         </Grid>
-        <Grid item xs={9}>
-          <Carousel />
-        </Grid>
+        {/* <Grid item xs={9}>
+          
+        </Grid> */}
       </Grid>
       <Divider />
     </div>

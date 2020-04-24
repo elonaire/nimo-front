@@ -48,7 +48,7 @@ export default function DropdownMenu(props) {
               button
               onClick={handleToggle(index)}
             >
-              <ListItemText id={labelId} primary={`${category.name}`} />
+              <ListItemText id={labelId} primary={`${category.category}`} />
               <ChevronRight edge="end" />
             </ListItem>
           );

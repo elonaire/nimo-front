@@ -72,7 +72,7 @@ export default function SignIn(props) {
     try {
       let res = await Axios({
         method: "post",
-        url: `${url + '/users/login'}`,
+        url: `${url + "/users/login"}`,
         data: reqBody,
       });
 
@@ -83,20 +83,23 @@ export default function SignIn(props) {
     }
   };
 
+  let userRole;
+  let token;
+
   if (response && response.user) {
     localStorage.setItem("JWTAUTH", response.JWTAUTH);
     localStorage.setItem("userRole", response.user.userRole);
 
-    let userRole = localStorage.getItem("userRole");
-    let token = localStorage.getItem("JWTAUTH");
+    userRole = localStorage.getItem("userRole");
+    token = localStorage.getItem("JWTAUTH");
 
     console.log("userRole", userRole);
+  }
 
-    if (userRole === "ADMIN" && token) {
-      auth.login(() => {
-        props.history.push("/admin-dashboard");
-      });
-    }
+  if (userRole && token && userRole === "ADMIN") {
+    auth.login(() => {
+      props.history.push("/admin-dashboard");
+    });
   }
 
   return (

@@ -21,110 +21,99 @@ import PropTypes from "prop-types";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import { Link as RouterLink } from "react-router-dom";
 import DropdownMenu from "../dropdown-menu/DropdownMenu";
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import auth from "../login/Auth";
 
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
+    color: '#f0f0f0'
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
     display: "none",
     [theme.breakpoints.up("sm")]: {
-      display: "block"
-    }
+      display: "block",
+    },
   },
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
     "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25)
+      backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
-      width: "auto"
-    }
+      width: "auto",
+    },
   },
   searchIcon: {
+    color: "#696969",
     width: theme.spacing(7),
     height: "100%",
     position: "absolute",
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   inputRoot: {
-    color: "inherit"
+    color: "#696969",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 7),
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
-      width: 200
-    }
+      width: 200,
+    },
   },
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
-      display: "flex"
-    }
+      display: "flex",
+    },
+    color: "#696969"
   },
   sectionMobile: {
     display: "flex",
     [theme.breakpoints.up("md")]: {
-      display: "none"
-    }
+      display: "none",
+    },
   },
   navBar: {
-    backgroundColor: "green"
+    backgroundColor: "#e8e8e8",
+    // color: '#000'
   },
   media: {
-    height: 0
+    height: 0,
     // paddingTop: '56.25%', // 16:9
   },
   cartLink: {
     display: "inline-block",
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   navLinks: {
-    color: "#fff",
+    color: "#696969",
     cursor: "pointer",
     textDecoration: "none",
     margin: "10px 10px 10px 10px",
-    display: 'flex',
-    flexDirection: 'row'
+    display: "flex",
+    flexDirection: "row",
   },
   signIn: {
-    color: "#000",
+    color: "#696969",
     cursor: "pointer",
     textDecoration: "none",
-  }
+  },
 }));
-
-const categories = [
-  {
-    name: 'Face Care',
-    subCategory: 'Face Pack'
-  }
-]
-
-function CheckAuth(status) {
-  if (localStorage.getItem('JWTAUTH')) {
-    status = true;
-  } else {
-    status = false;
-  }
-}
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -134,11 +123,11 @@ function ElevationScroll(props) {
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 0,
-    target: window ? window() : undefined
+    target: window ? window() : undefined,
   });
 
   return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0
+    elevation: trigger ? 4 : 0,
   });
 }
 
@@ -148,14 +137,15 @@ ElevationScroll.propTypes = {
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
-  window: PropTypes.func
+  window: PropTypes.func,
 };
 
-export default function NavBar() {
+// fetchCategories();
+
+export default function NavBar(props) {
   const classes = useStyles();
-  let isLoggedIn = false;
-  let userMenu = null;
-  CheckAuth(isLoggedIn);
+  let userMenu = [];
+  
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -163,7 +153,7 @@ export default function NavBar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = event => {
+  const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -176,17 +166,21 @@ export default function NavBar() {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = event => {
+  const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  if (isLoggedIn) {
-    userMenu = <Fragment>
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
-    </Fragment>
+  if (auth.confirmAuth()) {
+    userMenu.push(<MenuItem key={0} onClick={handleMenuClose}>Profile</MenuItem>);
+    userMenu.push(<MenuItem key={1} onClick={handleMenuClose}>Logout</MenuItem>);
   } else {
-    userMenu = <MenuItem onClick={handleMenuClose}><RouterLink className={classes.signIn} to="/login">Sign in</RouterLink></MenuItem>;
+    userMenu = (
+      <MenuItem onClick={handleMenuClose}>
+        <RouterLink className={classes.signIn} to="/login">
+          Sign in
+        </RouterLink>
+      </MenuItem>
+    );
   }
 
   const menuId = "primary-search-account-menu";
@@ -201,8 +195,6 @@ export default function NavBar() {
       onClose={handleMenuClose}
     >
       {userMenu}
-      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem> */}
     </Menu>
   );
 
@@ -219,7 +211,7 @@ export default function NavBar() {
     >
       <MenuItem>
         <PopupState variant="popover" popupId="demo-popup-popover">
-          {popupState => (
+          {(popupState) => (
             <Fragment>
               <p className={classes.cartLink} {...bindTrigger(popupState)}>
                 <IconButton
@@ -237,11 +229,11 @@ export default function NavBar() {
                 {...bindPopover(popupState)}
                 anchorOrigin={{
                   vertical: "bottom",
-                  horizontal: "center"
+                  horizontal: "center",
                 }}
                 transformOrigin={{
                   vertical: "top",
-                  horizontal: "center"
+                  horizontal: "center",
                 }}
               >
                 <Box p={2}>
@@ -278,9 +270,9 @@ export default function NavBar() {
     <div className={classes.grow}>
       <AppBar className={classes.navBar} position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
+          {/* <Typography className={classes.title} variant="h6" noWrap>
             Nimo Naturals&trade;
-          </Typography>
+          </Typography> */}
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -289,7 +281,7 @@ export default function NavBar() {
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,
-                input: classes.inputInput
+                input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
             />
@@ -298,7 +290,7 @@ export default function NavBar() {
             HOME
           </RouterLink>
           <PopupState variant="popover" popupId="demo-popup-popover">
-            {popupState => (
+            {(popupState) => (
               <div>
                 <RouterLink
                   to="#"
@@ -312,21 +304,21 @@ export default function NavBar() {
                   {...bindPopover(popupState)}
                   anchorOrigin={{
                     vertical: "bottom",
-                    horizontal: "center"
+                    horizontal: "center",
                   }}
                   transformOrigin={{
                     vertical: "top",
-                    horizontal: "center"
+                    horizontal: "center",
                   }}
                 >
-                  <DropdownMenu categories={categories} />
+                  <DropdownMenu categories={props.categories} />
                 </Popover>
               </div>
             )}
           </PopupState>
 
           <PopupState variant="popover" popupId="demo-popup-popover">
-            {popupState => (
+            {(popupState) => (
               <div>
                 <RouterLink
                   to="#"
@@ -340,21 +332,21 @@ export default function NavBar() {
                   {...bindPopover(popupState)}
                   anchorOrigin={{
                     vertical: "bottom",
-                    horizontal: "center"
+                    horizontal: "center",
                   }}
                   transformOrigin={{
                     vertical: "top",
-                    horizontal: "center"
+                    horizontal: "center",
                   }}
                 >
-                  <DropdownMenu categories={categories} />
+                  <DropdownMenu categories={props.categories} />
                 </Popover>
               </div>
             )}
           </PopupState>
 
           <PopupState variant="popover" popupId="demo-popup-popover">
-            {popupState => (
+            {(popupState) => (
               <div>
                 <RouterLink
                   to="#"
@@ -368,14 +360,14 @@ export default function NavBar() {
                   {...bindPopover(popupState)}
                   anchorOrigin={{
                     vertical: "bottom",
-                    horizontal: "center"
+                    horizontal: "center",
                   }}
                   transformOrigin={{
                     vertical: "top",
-                    horizontal: "center"
+                    horizontal: "center",
                   }}
                 >
-                  <DropdownMenu categories={categories} />
+                  <DropdownMenu categories={props.categories} />
                 </Popover>
               </div>
             )}
@@ -386,7 +378,7 @@ export default function NavBar() {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <PopupState variant="popover" popupId="demo-popup-popover">
-              {popupState => (
+              {(popupState) => (
                 <div>
                   <IconButton
                     // aria-describedby={id}
@@ -402,11 +394,11 @@ export default function NavBar() {
                     {...bindPopover(popupState)}
                     anchorOrigin={{
                       vertical: "bottom",
-                      horizontal: "center"
+                      horizontal: "center",
                     }}
                     transformOrigin={{
                       vertical: "top",
-                      horizontal: "center"
+                      horizontal: "center",
                     }}
                   >
                     <Box p={2}>

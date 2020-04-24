@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import MatTable from "../components/mat-table/MatTable";
 import AddUser from "../components/add-user/AddUser";
 import Grid from "@material-ui/core/Grid";
@@ -8,8 +8,8 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
-import Axios from 'axios';
-import * as moment from 'moment';
+import CircularIndeterminate from "../components/feedback/Circular";
+import { User } from "../components/utils/ApiCalls";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -34,60 +34,18 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-let tableData;
-const fetchUsers = async () => {
-  let url;
-
-  if (process.env.NODE_ENV === "development") {
-    url = process.env.REACT_APP_DEV_REMOTE;
-  } else if (process.env.NODE_ENV === "production") {
-    url = process.env.REACT_APP_PRODUCTION;
-  }
-
-  let users = await Axios({
-    method: "get",
-    url: `${url + '/users'}`,
-  });
-
-  let rows = [];
-
-  for (let i = 0; i < users.data.length; i++) {
-    let { first_name, last_name, user_role, createdAt } = users.data[i];
-
-    let row = {
-      firstName: first_name,
-      lastName: last_name,
-      role: user_role,
-      lastLogin: moment(createdAt).format('LLLL'),
-      dateOfRegistration: moment(createdAt).format('LLLL'),
-    };
-
-    rows.push(row);
-  }
-  console.log("rows", rows);
-
-  tableData = rows;
-};
-fetchUsers();
-
 const ManageUsers = () => {
+  const userAPI = new User(process.env.NODE_ENV);
   const [value, setValue] = useState(0);
-  const [data, setData] = useState(tableData);
+  const [data, setData] = useState([]);
+  const [usersIsLoading, setUsersIsLoading] = useState(true);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   React.useEffect(() => {
-    let isCancelled = false;
-    if (!isCancelled) {
-      fetchUsers();
-      setData(tableData);
-    }
-
-    return () => {
-      isCancelled = true;
-    };
+    userAPI.fetchUsers(setData, setUsersIsLoading);
   }, []);
 
   const columnNames = [
@@ -97,10 +55,6 @@ const ManageUsers = () => {
     "Last Login",
     "Date of Registration",
   ];
-  // const columnObject = {
-  //   title: null,
-  //   field: null
-  // }
 
   let columns = [];
 
@@ -120,7 +74,14 @@ const ManageUsers = () => {
           <Tab label="Add a new User" />
         </Tabs>
         <TabPanel value={value} index={0}>
-          <MatTable data={data} columns={columns} title="Users" />
+          {usersIsLoading && (
+            <Fragment>
+              <CircularIndeterminate />
+            </Fragment>
+          )}
+          {!usersIsLoading && (
+            <MatTable data={data} columns={columns} title="Users" />
+          )}
         </TabPanel>
         <TabPanel value={value} index={1}>
           <AddUser />

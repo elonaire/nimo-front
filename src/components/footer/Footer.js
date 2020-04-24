@@ -13,7 +13,7 @@ import {
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary">
+    <Typography variant="body2" color="inherit">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
         Nimo Naturals
@@ -40,8 +40,7 @@ const useStyles = makeStyles(theme => ({
   footer: {
     padding: theme.spacing(3, 2),
     marginTop: 'auto',
-    backgroundColor:
-      theme.palette.type === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
+    backgroundColor: 'green',
   },
   footerLinks: {
     color: '#fff',
@@ -81,7 +80,7 @@ export default function StickyFooter() {
           </Grid>
           <Grid item xs={3}>
             <Typography className={classes.linkTitle} variant="h6">Connect with us</Typography>
-            <div><Link target="_blank" href="https://www.facebook.com/nimonaturals-106906714043490/" className={classes.footerLinks}>Follow us on Facebook</Link></div>
+            <div><Link target="_blank" href="https://www.facebook.com/nimonaturals-106906714043490/" className={classes.footerLinks}>Like us on Facebook</Link></div>
             <div><Link target="_blank" href="https://www.instagram.com/nimonaturals/" className={classes.footerLinks}>Follow us on Instagram</Link></div>
             <div><Link className={classes.footerLinks}>Follow us on Twitter</Link></div>
           </Grid>

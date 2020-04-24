@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import MatTable from "../components/mat-table/MatTable";
 import Grid from "@material-ui/core/Grid";
 import AddProduct from "../components/add-product/AddProduct";
@@ -8,7 +8,9 @@ import Tab from "@material-ui/core/Tab";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import Axios from "axios";
+import AddCategory from "../components/add-product/AddCategory";
+import CircularIndeterminate from "../components/feedback/Circular";
+import { Product } from "../components/utils/ApiCalls";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -33,53 +35,19 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-let tableData;
-const fetchProducts = async () => {
-  let products = await Axios({
-    method: "get",
-    url: "http://192.168.214.206:3000/products",
-  });
-
-  let rows = [];
-
-  for (let i = 0; i < products.data.length; i++) {
-    let { name, stock, price } = products.data[i];
-
-    let row = {
-      name,
-      stock,
-      price,
-      piecesSold: 0,
-      pendingOrders: 0,
-    };
-
-    rows.push(row);
-  }
-  console.log("rows", rows);
-
-  tableData = rows;
-};
-fetchProducts();
-
 const ManageProducts = () => {
+  const productsAPI = new Product(process.env.NODE_ENV);
   const [value, setValue] = useState(0);
-  const [data, setData] = useState(tableData);
+  const [data, setData] = useState([]);
+  const [productsIsLoading, setProductsIsLoading] = React.useState(true);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    let isCancelled = false;
-    if (!isCancelled) {
-      fetchProducts();
-      setData(tableData);
-    }
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [data]);
+    productsAPI.fetchProducts(setProductsIsLoading, setData);
+  }, []);
 
   const columnNames = [
     "Name",
@@ -106,12 +74,23 @@ const ManageProducts = () => {
         >
           <Tab label="Products List" />
           <Tab label="Add a new Product" />
+          <Tab label="Add a new Category" />
         </Tabs>
         <TabPanel value={value} index={0}>
-          <MatTable data={data} columns={columns} title="Products" />
+          {productsIsLoading && (
+            <Fragment>
+              <CircularIndeterminate />
+            </Fragment>
+          )}
+          {!productsIsLoading && (
+            <MatTable data={data} columns={columns} title="Products" />
+          )}
         </TabPanel>
         <TabPanel value={value} index={1}>
           <AddProduct />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <AddCategory />
         </TabPanel>
       </Grid>
     </Grid>
