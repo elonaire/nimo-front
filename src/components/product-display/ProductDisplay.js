@@ -21,7 +21,11 @@ const useStyles = makeStyles((theme) => ({
   },
   bestH: {
     textAlign: "center",
-    color: "#696969"
+    color: "#fff",
+    backgroundColor: "green",
+    // padding: "5% 5%",
+    margin: "0 60% 0 5%",
+    clipPath: "polygon(4% 0, 100% 0%, 96% 100%, 0% 100%)"
   },
   tile: {
     minHeight: "42vh"

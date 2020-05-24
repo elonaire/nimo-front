@@ -19,7 +19,7 @@ import Popover from "@material-ui/core/Popover";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 import PropTypes from "prop-types";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, Redirect } from "react-router-dom";
 import DropdownMenu from "../dropdown-menu/DropdownMenu";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import auth from "../login/Auth";
@@ -27,7 +27,7 @@ import auth from "../login/Auth";
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
-    color: '#f0f0f0'
+    color: "#f0f0f0",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       display: "flex",
     },
-    color: "#696969"
+    color: "#696969",
   },
   sectionMobile: {
     display: "flex",
@@ -145,7 +145,6 @@ ElevationScroll.propTypes = {
 export default function NavBar(props) {
   const classes = useStyles();
   let userMenu = [];
-  
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -170,9 +169,28 @@ export default function NavBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const logout = () => {
+    auth.logout(() => {
+      localStorage.removeItem("JWTAUTH");
+    });
+
+    handleMenuClose();
+  }
+
   if (auth.confirmAuth()) {
-    userMenu.push(<MenuItem key={0} onClick={handleMenuClose}>Profile</MenuItem>);
-    userMenu.push(<MenuItem key={1} onClick={handleMenuClose}>Logout</MenuItem>);
+    let uuid = localStorage.getItem("userId");
+    userMenu.push(
+      <MenuItem key={0} onClick={handleMenuClose}>
+        <RouterLink className={classes.signIn} to={`/profile/${uuid}`}>
+          Profile
+        </RouterLink>
+      </MenuItem>
+    );
+    userMenu.push(
+      <MenuItem key={1} onClick={logout}>
+        Logout
+      </MenuItem>
+    );
   } else {
     userMenu = (
       <MenuItem onClick={handleMenuClose}>

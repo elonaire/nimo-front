@@ -28,7 +28,7 @@ function App() {
           <Route exact component={HomePage} path="/" />
           <ProtectedRoute exact component={AdminNav} path="/admin-dashboard" />
           <Route exact component={Blog} path="/blog" />
-          <Route exact component={UserAccount} path="/profile/:userId" />
+          <ProtectedRoute exact component={UserAccount} path="/profile/:userId" />
           <Route exact component={ProductDetails} path="/products/:productId" />
         </Switch>
       </div>

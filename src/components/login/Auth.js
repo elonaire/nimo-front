@@ -25,8 +25,24 @@ class Auth {
 
   confirmAuth() {
     let authStatus = localStorage.getItem("JWTAUTH");
-    if (authStatus) {
+    let userRole = localStorage.getItem("userRole");
+
+    if (authStatus && userRole === "PUBLIC") {
       this.isAuthenticated = true;
+    } else {
+      this.isAuthenticated = false;
+    }
+    return this.isAuthenticated;
+  }
+
+  confirmAdminAuth() {
+    let authStatus = localStorage.getItem("JWTAUTH");
+    let userRole = localStorage.getItem("userRole");
+
+    if (authStatus && userRole === "ADMIN") {
+      this.isAuthenticated = true;
+    } else {
+      this.isAuthenticated = false;
     }
     return this.isAuthenticated;
   }

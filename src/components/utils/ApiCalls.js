@@ -78,6 +78,22 @@ class Product extends BaseAPI {
     super(env);
   }
 
+  async fetchAllProducts(setIsLoading, setResponse) {
+    try {
+      let res = await Axios({
+        method: "get",
+        url: `${this.baseUrl + "/products"}`,
+      });
+
+      setResponse(res.data);
+      setIsLoading(false);
+    } catch (error) {
+      // setResponse(error.response);
+      setResponse([]);
+      setIsLoading(false);
+    }
+  }
+
   async fetchProducts(setIsLoading, setResponse) {
     try {
       let products = await Axios({
@@ -105,11 +121,27 @@ class Product extends BaseAPI {
       setResponse(rows);
       setIsLoading(false);
     } catch (error) {
-      setResponse(error.response);
+      // setResponse(error.response);
+      setResponse([]);
+      setIsLoading(false);
     }
   }
 
-  async fetchProductDetails() {}
+  async fetchProductDetails(setResponse, setIsLoading, productId) {
+    try {
+      let res = await Axios({
+        method: "get",
+        url: `${this.baseUrl + "/products?product_id=" + productId}`,
+      });
+
+      setResponse(res.data[0]);
+      setIsLoading(false);
+    } catch (error) {
+      // setResponse(error.response);
+      setResponse([])
+      setIsLoading(false);
+    }
+  }
 
   async addProduct(setResponse, setStateArray, OPTIONS) {
     try {
@@ -132,11 +164,25 @@ class Product extends BaseAPI {
     }
   }
 
-  async fetchProductFiles() {}
+  async fetchProductFiles(setResponse, setIsLoading, productId) {
+    try {
+      let res = await Axios({
+        method: "get",
+        url: `${this.baseUrl + "/files?product_id=" + productId}`,
+      });
 
-  async fetchProductReviews() {}
+      setResponse(res.data);
+      setIsLoading(false);
+    } catch (error) {
+      // setResponse(error.response);
+      setResponse([]);
+      setIsLoading(false);
+    }
+  }
 
-  async fetchProductOrders() {}
+  async fetchProductReviews(setResponse, setIsLoading, productId) {}
+
+  async fetchProductOrders(setResponse, setIsLoading, productId) {}
 }
 
 class Blog extends BaseAPI {
@@ -195,4 +241,64 @@ class Blog extends BaseAPI {
   async fetchBlogPost() {}
 }
 
-export { User, Product, Blog };
+class Category extends BaseAPI {
+  constructor(env) {
+    super(env);
+  }
+
+  async fetchCategories(setResponse, setIsLoading) {
+    try {
+      let res = await Axios({
+        method: "get",
+        url: `${this.baseUrl + "/category?category="}`,
+      });
+
+      setResponse(res.data);
+      setIsLoading(false);
+    } catch (error) {
+      // console.log(error.response);
+      // setResponse(error.response);
+      setResponse([]);
+      setIsLoading(false);
+    }
+  }
+}
+
+class Orders extends BaseAPI {
+  constructor(env) {
+    super(env);
+  }
+
+  async fetchOrdersAdmin(setResponse, setIsLoading) {
+    try {
+      let orders = await Axios({
+        method: "get",
+        url: `${this.baseUrl + "/orders/admin"}`,
+      });
+    
+      let rows = [];
+    
+      for (let i = 0; i < orders.data.length; i++) {
+        let { order_id, createdAt, quantity, product_id, status } = orders.data[i];
+    
+        let row = {
+          orderId: order_id,
+          date: createdAt,
+          quantity,
+          product: product_id,
+          status,
+        };
+    
+        rows.push(row);
+      }
+
+      setResponse(rows);
+      setIsLoading(false);
+    } catch (error) {
+      setResponse([]);
+      setIsLoading(false);
+    }
+  }
+}
+
+export { User, Product, Blog, Category, Orders };

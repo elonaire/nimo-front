@@ -7,7 +7,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
-        if (auth.confirmAuth()) {
+        if (auth.confirmAuth() || auth.confirmAdminAuth()) {
           return <Component {...props} />;
         } else {
           return (
@@ -15,8 +15,8 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
               to={{
                 pathname: "/login",
                 state: {
-                    from: props.location
-                }
+                  from: props.location,
+                },
               }}
             />
           );

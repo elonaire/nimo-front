@@ -9,7 +9,8 @@ import ProductDisplay from "../components/product-display/ProductDisplay";
 import About from "../components/about/About";
 import Reviews from "../components/reviews/Reviews";
 import CircularIndeterminate from "../components/feedback/Circular";
-import Axios from "axios";
+import { Product } from "../components/utils/ApiCalls";
+import { Category } from "../components/utils/ApiCalls";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -25,50 +26,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-let url;
-
-if (process.env.NODE_ENV === "development") {
-  url = process.env.REACT_APP_DEV_REMOTE;
-} else if (process.env.NODE_ENV === "production") {
-  url = process.env.REACT_APP_PRODUCTION;
-}
-
 const HomePage = () => {
   const classes = useStyles();
+  const productAPI = new Product(process.env.NODE_ENV);
+  const categoryAPI = new Category(process.env.NODE_ENV);
   const [products, setProducts] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [productsIsLoading, setProductsIsLoading] = React.useState(true);
   const [categoriesIsLoading, setCategoriesIsLoading] = React.useState(true);
 
-  const fetchProducts = async () => {
-    let res = await Axios({
-      method: "get",
-      url: `${url + "/products"}`,
-    });
-
-    setProducts(res.data);
-    setProductsIsLoading(false);
-  };
-
-  async function fetchCategories() {
-    try {
-      let res = await Axios({
-        method: "get",
-        url: `${url + "/category?category="}`,
-      });
-
-      setCategories(res.data);
-      setCategoriesIsLoading(false);
-    } catch (error) {
-      // console.log(error.response);
-      setCategories(error.response);
-      setCategoriesIsLoading(false);
-    }
-  }
-
   useEffect(() => {
-    fetchProducts();
-    fetchCategories();
+    productAPI.fetchAllProducts(setProductsIsLoading, setProducts);
+    categoryAPI.fetchCategories(setCategories, setCategoriesIsLoading);
   }, []);
 
   return (

@@ -85,20 +85,27 @@ export default function SignIn(props) {
 
   let userRole;
   let token;
+  let userId;
 
   if (response && response.user) {
     localStorage.setItem("JWTAUTH", response.JWTAUTH);
     localStorage.setItem("userRole", response.user.userRole);
+    localStorage.setItem("userId", response.user.userId);
 
     userRole = localStorage.getItem("userRole");
     token = localStorage.getItem("JWTAUTH");
+    userId = localStorage.getItem("userId");
 
-    console.log("userRole", userRole);
+    console.log("res", response);
   }
 
   if (userRole && token && userRole === "ADMIN") {
     auth.login(() => {
       props.history.push("/admin-dashboard");
+    });
+  } else if (userRole && token && userRole === "PUBLIC") {
+    auth.login(() => {
+      props.history.push(`/profile/${userId}`);
     });
   }
 
