@@ -1,8 +1,10 @@
 import React, { Fragment } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
 import { SmallProfileImg } from "./ProfileImg";
 import Badge from "@material-ui/core/Badge";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles((theme) => ({
   inboxContainer: {
@@ -57,6 +59,21 @@ const useStyles = makeStyles((theme) => ({
   previewContent: {
     display: "flex",
     flexDirection: "column",
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#60de50",
+    "&:hover": {
+      backgroundColor: "#e08455",
+    },
+    color: "#ebebeb",
+  },
+  form: {
+    position: "relative",
+    bottom: "0"
+  },
+  msgInput: {
+    padding: "2px 0"
   }
 }));
 
@@ -85,6 +102,11 @@ function Incoming() {
 
 const Inbox = () => {
   const classes = useStyles();
+  const [message, setMessage] = React.useState("");
+
+  const handleInputChanges = (event, cb) => {
+    cb(event.target.value);
+  };
 
   return (
     <Grid container spacing={0} className={classes.inboxContainer}>
@@ -93,7 +115,9 @@ const Inbox = () => {
           <SmallProfileImg />
           <Badge badgeContent={1} color="secondary">
             <div className={classes.previewContent}>
-              <span><strong>Jane Doe</strong></span>
+              <span>
+                <strong>Jane Doe</strong>
+              </span>
               <span>Sample message...</span>
             </div>
           </Badge>
@@ -103,6 +127,37 @@ const Inbox = () => {
         <div className={classes.inbox}>
           <Incoming />
           <Outgoing />
+          {/* <div>
+            <form className={classes.form} noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    value={message}
+                    onChange={(e) => handleInputChanges(e, setMessage)}
+                    variant="outlined"
+                    // required
+                    // fullWidth
+                    // id="message"
+                    // label="Type your message..."
+                    // name="message"
+                    // autoComplete="message"
+                    placeholder="Type your message..."
+                    className={classes.msgInput}
+                  />
+                  <Button
+                    // onClick={() => addUser(reqBody)}
+                    // type="button"
+                    // fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                  >
+                    Send
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </div> */}
         </div>
       </Grid>
     </Grid>

@@ -299,6 +299,10 @@ class Orders extends BaseAPI {
       setIsLoading(false);
     }
   }
+
+  async filterOrders(setResponse, setIsLoading, filter) {
+    
+  }
 }
 
 export { User, Product, Blog, Category, Orders };
