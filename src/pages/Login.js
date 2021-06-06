@@ -3,11 +3,11 @@ import Footer from "../components/footer/Footer";
 import NavBar from "../components/nav/Navbar";
 import Login from "../components/login/Login";
 
-const LoginPage = () => {
+const LoginPage = (props) => {
     return ( 
         <Fragment>
             <NavBar />
-            <Login />
+            <Login history={props.history} />
             <Footer />
         </Fragment>
      );

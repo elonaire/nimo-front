@@ -1,29 +1,36 @@
-import React from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import MatTable from "../components/mat-table/MatTable";
-import Grid from '@material-ui/core/Grid';
-import { createColumns } from "../components/CreateColumns"
+import Grid from "@material-ui/core/Grid";
+import {Orders} from "../components/utils/ApiCalls";
+import { createColumns } from "../components/CreateColumns";
+import CircularIndeterminate from "../components/feedback/Circular";
 
 export default function ManageOrders() {
-  const columnNames = ['Order ID', 'Date', 'Quantity', 'Product', 'Status']
-  const columnObject = {
-    title: null,
-    field: null
-  }
+  const columnNames = ["Order ID", "Date", "Quantity", "Product", "Status"];
+  const [data, setData] = useState([]);
+  const [ordersIsLoading, setOrdersIsLoading] = useState(false);
+  const OrdersAPI = new Orders(process.env.NODE_ENV);
 
-  let columns = []
-  const data = []
+  useEffect(() => {
+    OrdersAPI.fetchOrdersAdmin(setData, setOrdersIsLoading);
+  }, []);
 
-  columns = createColumns(columnNames, columnObject, columns);
+  let columns = [];
+
+  columns = createColumns(columnNames);
 
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
-        <MatTable
-          data={data}
-          columns={columns}
-          title="Orders"
-        />
+      {ordersIsLoading && (
+            <Fragment>
+              <CircularIndeterminate />
+            </Fragment>
+          )}
+          {!ordersIsLoading && (
+            <MatTable data={data} columns={columns} title="Orders" />
+          )}
       </Grid>
     </Grid>
   );
-};
+}

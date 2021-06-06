@@ -50,7 +50,7 @@ export default function About() {
   return (
     <div className={classes.wrapper}>
       <Typography className={classes.aboutTitle} variant="h3">
-        NIMO NATURALS®
+        NIMO NATURALS<sup>®</sup>
       </Typography>
       <Typography className={classes.aboutSub} variant="h4">
         HARNESSES THE POWER OF PLANT-BASED INGREDIENTS AND EXTRACTS TO DELIVER
@@ -58,7 +58,7 @@ export default function About() {
       </Typography>
       <Grid container spacing={0}>
         <Grid item xs={6}>
-          <Card className={classes.root}>
+          <Card variant="outlined" elevation={0} className={classes.root} square>
             <Grid container spacing={0}>
               <Grid item xs={12}>
                 <CardMedia
@@ -71,7 +71,7 @@ export default function About() {
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Card className={classes.root}>
+          <Card variant="outlined" elevation={0} className={classes.root} square>
             <Grid container spacing={0}>
               <Grid item xs={12}>
                 <CardMedia
